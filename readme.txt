@@ -1,23 +1,26 @@
-=== vcgs-tools ===
+=== Vcgs Toolbox ===
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.8
 License: GPL2
 
-Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
+Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience. All are based on articles written by Victor Campuzano in his personal blog <a href="http://www.vcgs.net/blog">vcgs.net / blog</a>
 
 == Description ==
-Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
+Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience. All are based on articles written by Victor Campuzano in his personal blog <a href="http://www.vcgs.net/blog">vcgs.net / blog</a>
 
 At the moment, this plugin include:
-- Scrollytics: add a javascript code based on \"Scroll Depth\" to track what percentage scroll every user.
-- Piopialo: Shortcode to easily tweet some text from your posts.
-- Font Awesome: Include de Font Awesome header code to use icons on your posts.
+<ul>
+<li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user.</li>
+<li><a href="http://www.vcgs.net/blog/piopialo-shortcode-para-tuitear-facilmente-frases-de-posts/" target="_blank">*Piopialo:*</a> Shortcode to easily convert relevant sentences in tweetable text.</li>
+<li><a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/">*Font Awesome:*</a> Include de Font Awesome header code to use icons on your posts.</li>
+</ul>
 
 == Installation ==
-Simply upload and install the plugin and configure it going to Settings->VCGS Toolbox
+1. Simply upload and install the plugin.
+2. Go to Settings->Vcgs Toolbox to activate and configure features.
 
 == Changelog ==
 === 0.5
-First version: includes possibility of insert “Font Awesome” on your blog. Also includes Scrollytics (track scroll on your posts and pages with Google Analytics) and Piopialo (easily share some text on facebook, twitter and Google Plus).
+First version: includes possibility of insert “Font Awesome” on your blog. Also includes Scrollytics (track scroll on your posts and pages with Google Analytics) and Piopialo (easily share yout posts on facebook, twitter and Google Plus using relevant sentences).
