@@ -4,8 +4,9 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.8
 License: GPL2
+Stable Tag: 0.5
 
-Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience. All are based on articles written by Victor Campuzano in his personal blog <a href="http://www.vcgs.net/blog">vcgs.net / blog</a>
+Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
 
 == Description ==
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience. All are based on articles written by Victor Campuzano in his personal blog <a href="http://www.vcgs.net/blog">vcgs.net / blog</a>
