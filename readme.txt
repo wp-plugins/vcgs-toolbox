@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.8
 License: GPL2
-Stable Tag: 0.5
+Stable Tag: 0.6
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
 
@@ -23,5 +23,8 @@ At the moment, this plugin include:
 2. Go to Settings->Vcgs Toolbox to activate and configure features.
 
 == Changelog ==
+=== 0.6
+Solved issue on PHP Versions Older than 5.3.1
+
 === 0.5
 First version: includes possibility of insert “Font Awesome” on your blog. Also includes Scrollytics (track scroll on your posts and pages with Google Analytics) and Piopialo (easily share yout posts on facebook, twitter and Google Plus using relevant sentences).

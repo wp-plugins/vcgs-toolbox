@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 0.5
+ * Version: 0.6
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -239,7 +239,8 @@ add_action( 'wp_enqueue_scripts', 'registra_fontawesome' );
 
 if ($options['pp_activate']==1)
 {
-	add_shortcode('piopialo', function ($atts, $content = null) {
+	
+	function MiPiopialo($atts, $content = null) {
 		
 	$options = get_option('vcgstb_options');
 	// Configuración por defecto - Edita estas variables si lo deseas
@@ -304,5 +305,6 @@ if ($options['pp_activate']==1)
 		
 	}
 	
-});
+}
+add_shortcode('piopialo', 'MiPiopialo');
 }
