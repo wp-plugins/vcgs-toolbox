@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.8
 License: GPL2
-Stable Tag: 0.6
+Stable Tag: 0.7
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
 
@@ -16,6 +16,7 @@ At the moment, this plugin includes:
 <li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user does on every post or page.</li>
 <li><a href="http://www.vcgs.net/blog/piopialo-shortcode-para-tuitear-facilmente-frases-de-posts/" target="_blank">*Piopialo:*</a> Shortcode to convert easily relevant sentences in tweetable text.</li>
 <li><a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/">*Font Awesome:*</a> Includes the Font Awesome header code to use icons on your blog posts.</li>
+<li><strong>New!</strong><a href="http://getbootstrap.com/" target="_blank">*Bootstrap*:</a> Includes the Bootstrap from Twitter to use ON PAGES. You can use Layouit tu build great pages using Bootstrap.</li>
 </ul>
 
 == Installation ==
@@ -23,6 +24,8 @@ At the moment, this plugin includes:
 2. Go to Settings->Vcgs Toolbox to activate and configure features.
 
 == Changelog ==
+=== 0.7
+Added support to include Bootstrap 3 on your Blog
 === 0.6
 Solved issue on PHP Versions Older than 5.3.1
 
