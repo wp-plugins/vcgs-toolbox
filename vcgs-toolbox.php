@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 0.5
+ * Version: 0.7
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -64,6 +64,15 @@ function sc_activate_f() {
     $html .= '<label for="sc_activate">Activa esta casilla si quieres que se registre en Google Analytics el Scroll que hacen tus visitantes.</label>';
     echo $html;
 }
+add_settings_field('sc_single', 'Sólo en Páginas/Posts', 'sc_single_f', 'vcgs_toolbox', 'vcgstb_scrollytics');
+function sc_single_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="sc_single" name="vcgstb_options[sc_single]" value="1"' . checked( 1, $options['sc_single'], false ) . '/>';
+    $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
+    echo $html;
+}
+
+// Comenzamos con la sección de Settings para Font Awesome
 add_settings_section('vcgstb_fontawesome', 'Relativo a Font Awesome', 'plugin_fontawesome_section_text', 'vcgs_toolbox');
 	function plugin_fontawesome_section_text(){
 ?>
@@ -78,15 +87,24 @@ function fa_activate_f() {
     $html .= '<label for="fa_activate">Activa esta casilla si quieres que se incluya Font Awesome en tu blog.</label>';
     echo $html;
 }
-add_settings_field('sc_single', 'Sólo en Páginas/Posts', 'sc_single_f', 'vcgs_toolbox', 'vcgstb_scrollytics');
-function sc_single_f() {
+
+// Comenzamos con la sección de Settings para Bootstrap
+add_settings_section('vcgstb_bootstrap', 'Relativo a BootStrap', 'plugin_bootstrap_section_text', 'vcgs_toolbox');
+	function plugin_bootstrap_section_text(){
+?>
+<p>Esta sección se refiere a incluir o no los scripts de cabecera de Bootstrap para poder aprovechar todo su potencial dentro de nuestras páginas. Por poner un ejemplo, puedes ver cómo aprovecharlo en este post, utilizando la utilizadad Layoutit. <strong>¡Cuidado! -> Esta configuración puede provocar algun problema con tu Theme. Si, tras activarlo, observas resultados que no te cuadran, desactívalo enseguida.</strong></p>
+<?php
+	}
+
+add_settings_field('bs_activate', 'Activar BootStrap', 'bs_activate_f', 'vcgs_toolbox', 'vcgstb_bootstrap');
+function bs_activate_f() {
 	$options = get_option( 'vcgstb_options' );
-    $html = '<input type="checkbox" id="sc_single" name="vcgstb_options[sc_single]" value="1"' . checked( 1, $options['sc_single'], false ) . '/>';
-    $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
+    $html = '<input type="checkbox" id="bs_activate" name="vcgstb_options[bs_activate]" value="1"' . checked( 1, $options['bs_activate'], false ) . '/>';
+    $html .= '<label for="bs_activate">Activa esta casilla si quieres que se incluya Bootstrap en tu blog.</label>';
     echo $html;
 }
 
-// Comenzamos con la sección se Settings para Piopialo
+// Comenzamos con la sección de Settings para Piopialo
 	add_settings_section('vcgstb_piopialo', 'Relativos al Shortcode Piopíalo', 'plugin_piopialo_section_text', 'vcgs_toolbox');
 	function plugin_piopialo_section_text(){
 ?>
@@ -154,6 +172,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
 	{
 		$input['sc_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('bs_activate',$input))
+	{
+		$input['bs_activate'] = '0';
 	}
 	if (!is_array($input) || !array_key_exists('sc_single',$input))
 	{
@@ -236,10 +258,22 @@ function registra_fontawesome() {
 add_action( 'wp_enqueue_scripts', 'registra_fontawesome' );
 }
 
+// Ahora toca hablar del Bootstrap
+if (is_page() && $options['bs_activate']==1)
+{
+	function registra_bootstrap() {
+		wp_register_style('bootstrap_css','//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', false, false, 'all');
+		wp_register_script( 'bootstrap_js', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js', array( 'jquery' ), false, false );
+		wp_enqueue_style('bootstrap_css');
+		wp_enqueue_script('bootstrap_js');
+	}
+	add_action ('wp_enqueue_scripts','registra_bootstrap');
+}
 
 if ($options['pp_activate']==1)
 {
-	add_shortcode('piopialo', function ($atts, $content = null) {
+	
+	function MiPiopialo($atts, $content = null) {
 		
 	$options = get_option('vcgstb_options');
 	// Configuración por defecto - Edita estas variables si lo deseas
@@ -304,5 +338,6 @@ if ($options['pp_activate']==1)
 		
 	}
 	
-});
+}
+add_shortcode('piopialo', 'MiPiopialo');
 }
