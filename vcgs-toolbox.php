@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 0.7
+ * Version: 0.8
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -167,6 +167,21 @@ function pp_linkedin_f() {
     echo $html;
 }
 
+// Comenzamos con la sección de Settings para Midenlace Shortcode
+add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
+	function plugin_midenlace_section_text(){
+?>
+<p>Esta sección se refiere activar el Midenlalytics o, lo que es lo mismo, <b>un shortcode mara registrar clics a enlaces en google analytics</b>. Se usa colocando el shortcode <code>[midenlace categoria="categoria" etiqueta="etiqueta" accion="accion"]el código html del enlace[/midenlace]</code> para que el plugin registre los clics a ese enlace en Google Analytics como un evento. Puedes leer <a href="http://www.vcgs.net/blog/midenlalytics-mide-clics-enlaces-en-google-analytics" target="_blank">este post</a> para informarte mejor.</p>
+<?php
+	}
+
+add_settings_field('me_activate', 'Activar Midenlace', 'me_activate_f', 'vcgs_toolbox', 'vcgstb_midenlace');
+function me_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="me_activate" name="vcgstb_options[me_activate]" value="1"' . checked( 1, $options['me_activate'], false ) . '/>';
+    $html .= '<label for="me_activate">Activa esta casilla si quieres activar el Shortcode Midenlace.</label>';
+    echo $html;
+}
 
 function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
@@ -176,6 +191,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('bs_activate',$input))
 	{
 		$input['bs_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('me_activate',$input))
+	{
+		$input['me_activate'] = '0';
 	}
 	if (!is_array($input) || !array_key_exists('sc_single',$input))
 	{
@@ -340,4 +359,44 @@ if ($options['pp_activate']==1)
 	
 }
 add_shortcode('piopialo', 'MiPiopialo');
+}
+
+
+// Ahora comenzamos con el tema de midenlace
+if ($options["me_activate"]=='1')
+{
+	// Register Script
+
+	function carga_midenlace() {
+		wp_register_script( 'midenlace', plugins_url( '/js/midenlace.js' , __FILE__ ), array( 'jquery' ), false, true );
+		wp_enqueue_script( 'midenlace' );
+	}
+	
+	// Hook into the 'wp_enqueue_scripts' action
+	add_action( 'wp_enqueue_scripts', 'carga_midenlace' );
+	
+	function MiMidenlace($atts, $content = null) {
+		// Configuración por defecto - Edita estas variables si lo deseas
+		$i_categoria = 'Midenlace';
+		$i_accion = 'Clic en Enlace';
+		$i_etiqueta = 'EtiquetaEvento';
+		// -------------------------------------
+		// Extraer y tratar los parámetros recibidos
+		extract(shortcode_atts(array(  
+			"categoria" => '',
+			 "accion" => '',
+			 "etiqueta" => ''
+		), $atts));
+		if ($categoria != '') $i_categoria = $categoria;
+		if ($accion != '') $i_accion = $accion;
+		if ($etiqueta != '') $i_etiqueta = $etiqueta;	
+		
+		if ($content != null) {	
+			$evento = '<a onClick="javascript:rMidEnlace(\''.$i_categoria.'\', \''.$i_accion.'\', \''.$i_etiqueta.'\');"  ';
+			$devolver = str_replace('<a ', $evento,$content);
+			return $devolver;
+		}
+}
+add_shortcode('midenlace', 'MiMidenlace');
+	
 }

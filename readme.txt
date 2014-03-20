@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.8
 License: GPL2
-Stable Tag: 0.7
+Stable Tag: 0.8
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
 
@@ -24,6 +24,9 @@ At the moment, this plugin includes:
 2. Go to Settings->Vcgs Toolbox to activate and configure features.
 
 == Changelog ==
+
+=== 0.8
+Added midenlace shortcode to easily track links con Google Analytics as Events. Supports both Classic and Universal Analytics
 === 0.7
 Added support to include Bootstrap 3 on your Blog
 === 0.6
