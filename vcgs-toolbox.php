@@ -335,8 +335,16 @@ if ($options['pp_activate']==1)
 		
 		// Primero crear la etiqueta para enlazar directamente a este lugar
 		$ancla = $directoa ? '<a name="'.$tagid.'" id="'.$tagid.'"></a>':'';
+		
+		// Nuevo, si MideEnlace está activado, medimos el clic
+		if ($options['me_activate'] == '1')
+		{
+			$onclick = ' onClick="javascript:rMidEnlace(\'piopialo\', \''.get_the_title().'\', \''.$content.'\');" ';
+		} else {
+			$onclick = '';
+		}
 				
-		$enlace = '<a target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
+		$enlace = '<a'.$onclick.' target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
 		if ($i_gplus)
 		{
