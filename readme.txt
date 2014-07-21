@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable Tag: 1.0
+Stable Tag: 1.0.1
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -33,6 +33,8 @@ At the moment, this plugin includes:
 3. Example of piopialo.
 
 == Changelog ==
+=== 1.0.1
+I forget to include the piopialo icon :(
 === 1.0
 Added 2 new features:
 - Find comments not replied by author. Based on "Comments Not Replied To" (Original Plugin written by Pippin Williamson, Andrew Norcross, Tom McFarlin) but with some hacks. You can find comments not replied by his author in the last month.
