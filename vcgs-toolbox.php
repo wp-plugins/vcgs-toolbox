@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 0.9
+ * Version: 1.0
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -46,14 +46,15 @@ function f_vcgstoolbox_page() {
 </div>
 <?php
 }
-
 add_action('admin_init', 'plugin_admin_init');
 function plugin_admin_init(){
 	register_setting( 'vcgstb_options', 'vcgstb_options', 'vcgstb_validate_options' );
+	
 	add_settings_section('vcgstb_scrollytics', 'Relativos a Scrollytics', 'plugin_scrollytics_section_text', 'vcgs_toolbox');
 	function plugin_scrollytics_section_text(){
 ?>
 <p>Esta sección se refiere a incluir o no la Monitorización del Scroll de tus posts a través de Google Analytics. Puedes encontrar información detallada sobre esto en este post de mi blog: <a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">Scrollytics</a>.</p>
+
 <?php
 	}
 
@@ -72,11 +73,13 @@ function sc_single_f() {
     echo $html;
 }
 
+
 // Comenzamos con la sección de Settings para Font Awesome
 add_settings_section('vcgstb_fontawesome', 'Relativo a Font Awesome', 'plugin_fontawesome_section_text', 'vcgs_toolbox');
 	function plugin_fontawesome_section_text(){
 ?>
 <p>Esta sección se refiere a incluir o no los scripts de Font Awesome que te permitirán usar la nomenclatura  para mostrar iconos de Font Awesome en tus posts. Puedes ver un vídeo y ejemplos en mi post: <a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/" target="_blank">Posticoning</a>..</p>
+
 <?php
 	}
 
@@ -93,6 +96,7 @@ add_settings_section('vcgstb_bootstrap', 'Relativo a BootStrap', 'plugin_bootstr
 	function plugin_bootstrap_section_text(){
 ?>
 <p>Esta sección se refiere a incluir o no los scripts de cabecera de Bootstrap para poder aprovechar todo su potencial dentro de nuestras páginas. Por poner un ejemplo, puedes ver cómo aprovecharlo en este post, utilizando la utilizadad Layoutit. <strong>¡Cuidado! -> Esta configuración puede provocar algun problema con tu Theme. Si, tras activarlo, observas resultados que no te cuadran, desactívalo enseguida.</strong></p>
+
 <?php
 	}
 
@@ -112,6 +116,7 @@ function bs_activate_f() {
 <p>El uso del piopialo es sencillo:</p>
 <p>Encierra la frase que quieres que sea "piopiable" así: <code>[piopialo <opciones>]aquí la frase que quieres que sea clicable[/piopialo]</code>. Este sencillo código utilizará las opciones por defecto que puedes especificar aquí.</p>
 <p>Además, para cada caso concreto (cada frase en concreto) puedes especifciar las opciones siguientes:</p>
+
 <?php
 	}
 
@@ -172,6 +177,7 @@ add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenla
 	function plugin_midenlace_section_text(){
 ?>
 <p>Esta sección se refiere activar el Midenlalytics o, lo que es lo mismo, <b>un shortcode mara registrar clics a enlaces en google analytics</b>. Se usa colocando el shortcode <code>[midenlace categoria="categoria" etiqueta="etiqueta" accion="accion"]el código html del enlace[/midenlace]</code> para que el plugin registre los clics a ese enlace en Google Analytics como un evento. Puedes leer <a href="http://www.vcgs.net/blog/midenlalytics-mide-clics-enlaces-en-google-analytics" target="_blank">este post</a> para informarte mejor.</p>
+
 <?php
 	}
 
@@ -182,6 +188,42 @@ function me_activate_f() {
     $html .= '<label for="me_activate">Activa esta casilla si quieres activar el Shortcode Midenlace.</label>';
     echo $html;
 }
+
+// Comenzamos con la sección de Settings para la columna contadora de palabras
+add_settings_section('vcgstb_cpalabras', 'Relativo al contador de Palabras', 'plugin_cpalabras_section_text', 'vcgs_toolbox');
+	function plugin_cpalabras_section_text(){
+?>
+<p>Esta sección se refiere a si deseas activar la columna contadora de palabras en tu panel de adminsitración. Si lo activas, cuando vayas a Entradas, verás una columna que te dice cuántas palabras tiene cada post. Es ideal, por ejemplo, para comparar el número de comentarios con la longitud de los posts de un rápido vistazo. También te puede servir para ver la evolución que están teniendo tus posts.</p>
+
+<?php
+	}
+
+add_settings_field('copa_activate', 'Activar el Contador de Palabras', 'copa_activate_f', 'vcgs_toolbox', 'vcgstb_cpalabras');
+function copa_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="copa_activate" name="vcgstb_options[copa_activate]" value="1"' . checked( 1, $options['copa_activate'], false ) . '/>';
+    $html .= '<label for="copa_activate">Activa esta casilla si quieres que aparezca la columna contadora de palabras.</label>';
+    echo $html;
+}
+
+// Comenzamos con la sección de Settings para los comentarios sin responder
+add_settings_section('vcgstb_sinrespuesta', 'Relativo a la funcionalidad de Comentarios Sin Responder', 'plugin_sinrespuesta_section_text', 'vcgs_toolbox');
+	function plugin_sinrespuesta_section_text(){
+?>
+<p>Esta sección se refiere a si quieres activar la funcionalidad de <strong>comentarios pendientes de responder</strong>. Basado en el plugin original <a href="https://wordpress.org/plugins/comments-not-replied-to/" target="_blank">"Comments Not Replied To"</a> aunque con algunas mejoras, como que no muestre los pingbacks o que solo muestre los comentarios pendientes del último mes. <strong>Cuidado</strong>, no activar esta opción si tienes el plugin instalado y activado pues provocarás un conflicto.</p>
+<p>Una vez activado, verás un filtro en la página de comentarios que te mostrará los comentarios pendientes de responder que tienes. Para mí es realmente útil.</p>
+
+<?php
+	}
+
+add_settings_field('cope_activate', 'Activar la Funcionalidad de Comentarios Sin Respuesta', 'cope_activate_f', 'vcgs_toolbox', 'vcgstb_sinrespuesta');
+function cope_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="cope_activate" name="vcgstb_options[cope_activate]" value="1"' . checked( 1, $options['cope_activate'], false ) . '/>';
+    $html .= '<label for="cope_activate">Activa esta casilla si quieres poder filtrar los comentarios que no has respondido aún.</label>';
+    echo $html;
+}
+
 
 function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
@@ -231,12 +273,30 @@ function vcgstb_validate_options($input) {
 	{
 		$input['pp_via'] = '';
 	}
+	if (!is_array($input) || !array_key_exists('copa_activate',$input))
+	{
+		$input['copa_activate'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('cope_activate',$input))
+	{
+		$input['cope_activate'] = '';
+	}
 	return $input;
 }
 
 }
 
 $options = get_option('vcgstb_options');
+
+if ($options['copa_activate']=='1')
+{
+	include(dirname(__FILE__). '/columna-contapalabras.php');
+}
+
+if ($options['cope_activate']=='1')
+{
+	include(dirname(__FILE__). '/comentarios-pendientes.php');
+}
 
 if ($options['sc_activate']=='1')
 {
@@ -339,7 +399,7 @@ if ($options['pp_activate']==1)
 		// Nuevo, si MideEnlace está activado, medimos el clic
 		if ($options['me_activate'] == '1')
 		{
-			$onclick = ' onClick="javascript:rMidEnlace(\'piopialo\', \''.get_the_title().'\', \''.$content.'\');" ';
+			$onclick = ' onClick="javascript:rMidEnlace(\'piopialo\', \''.get_the_title().'\', \''.strip_tags($content).'\');" ';
 		} else {
 			$onclick = '';
 		}
@@ -367,6 +427,23 @@ if ($options['pp_activate']==1)
 	
 }
 add_shortcode('piopialo', 'MiPiopialo');
+
+// Registramos el botón del editor
+add_action( 'init', 'vcgs_buttons' );
+function vcgs_buttons() {
+    add_filter( "mce_external_plugins", "wptuts_add_buttons" );
+    add_filter( 'mce_buttons', 'wptuts_register_buttons' );
+}
+function wptuts_add_buttons( $plugin_array ) {
+    $plugin_array['vcgs'] = plugins_url( '/js/pio-editor.js' , __FILE__ );
+    return $plugin_array;
+}
+function wptuts_register_buttons( $buttons ) {
+    array_push( $buttons, 'piopialo' ); 
+    return $buttons;
+}
+//Fin de registrar Botón
+
 }
 
 

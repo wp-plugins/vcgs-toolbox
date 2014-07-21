@@ -4,9 +4,9 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable Tag: 0.9
+Stable Tag: 1.0
 
-Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience.
+Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
 == Description ==
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for make better your blogging experience. All are based on articles written by Victor Campuzano in his personal blog <a href="http://www.vcgs.net/blog">vcgs.net / blog</a>
@@ -33,6 +33,14 @@ At the moment, this plugin includes:
 3. Example of piopialo.
 
 == Changelog ==
+=== 1.0
+Added 2 new features:
+- Find comments not replied by author. Based on "Comments Not Replied To" (Original Plugin written by Pippin Williamson, Andrew Norcross, Tom McFarlin) but with some hacks. You can find comments not replied by his author in the last month.
+- Word Count column on posts page. Adds a column on the list posts admin page wich displays the word count of each post. Useful for compare comments by post length.
+
+Added TinyMCE button for Piopialo. Now, add piopialo shortcode is very easy with the Editor Button.
+
+Bug Fixes
 === 0.9
 Tested up to WordPress 3.9
 Now tracks piopialo's links if your are enabled midenlace on the config page.
