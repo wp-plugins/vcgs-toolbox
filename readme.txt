@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable Tag: 1.0.1
+Stable Tag: 1.0.3
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -33,6 +33,8 @@ At the moment, this plugin includes:
 3. Example of piopialo.
 
 == Changelog ==
+- 1.0.2
+--- Bug Fixes: Column Wordcount
 === 1.0.1
 I forget to include the piopialo icon :(
 === 1.0
