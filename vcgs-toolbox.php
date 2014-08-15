@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.0.3
+ * Version: 1.1
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -172,6 +172,22 @@ function pp_linkedin_f() {
     echo $html;
 }
 
+add_settings_field('pp_underlined', 'Subrayar Frase', 'pp_underlined_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_underlined_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_underlined" name="vcgstb_options[pp_underlined]" value="1"' . checked( 1, $options['pp_underlined'], false ) . '/>';
+    $html .= '<label for="pp_underlined">¿Deseas que las frases aparezcan subrayadas? Aunque esta propiedad se puede establecer mediante CSS, si no quieres tocar la hoja de estilos de tu Theme, puedes marcar esta casilla y las frases aparecerán subrayadas.</p>';
+    echo $html;
+}
+
+add_settings_field('pp_powered', 'Eliminar firma de Vcgs-Toolbox', 'pp_powered_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_powered_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_powered" name="vcgstb_options[pp_powered]" value="1"' . checked( 1, $options['pp_powered'], false ) . '/>';
+    $html .= '<label for="pp_powered">¿Eliminar la firma Powered By de debajo de las Cajas de Piopialo?.</label><p><small>En los piopialos que van encerrados en cajas, se añade por defecto un enlace hacia el plugin. Si quieres puedes eliminarlo aunque, si lo dejas, contribuirás a que el plugin se descargue por más gente y yo te lo agradeceré mucho.</small></p>';
+    echo $html;
+}
+
 // Comenzamos con la sección de Settings para Midenlace Shortcode
 add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
 	function plugin_midenlace_section_text(){
@@ -262,6 +278,14 @@ function vcgstb_validate_options($input) {
 	{
 		$input['pp_linkedin'] = '0';
 	}
+	if (!is_array($input) || !array_key_exists('pp_powered',$input))
+	{
+		$input['pp_powered'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('pp_underlined',$input))
+	{
+		$input['pp_underlined'] = '0';
+	}
 	if (!is_array($input) || !array_key_exists('fa_activate',$input))
 	{
 		$input['fa_activate'] = '0';
@@ -341,8 +365,8 @@ add_action( 'wp_enqueue_scripts', 'registra_fontawesome' );
 if (is_page() && $options['bs_activate']==1)
 {
 	function registra_bootstrap() {
-		wp_register_style('bootstrap_css','//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', false, false, 'all');
-		wp_register_script( 'bootstrap_js', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js', array( 'jquery' ), false, false );
+		wp_register_style('bootstrap_css','//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css', false, false, 'all');
+		wp_register_script( 'bootstrap_js', '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js', array( 'jquery' ), false, false );
 		wp_enqueue_style('bootstrap_css');
 		wp_enqueue_script('bootstrap_js');
 	}
@@ -351,6 +375,12 @@ if (is_page() && $options['bs_activate']==1)
 
 if ($options['pp_activate']==1)
 {
+	function add_piopialob_styles() {
+		wp_register_style('piopialob_style', plugins_url('css/piopialob.css', __FILE__));
+		wp_enqueue_style('piopialob_style');
+	}
+	add_action( 'wp_enqueue_scripts', 'add_piopialob_styles' ); 
+
 	
 	function MiPiopialo($atts, $content = null) {
 		
@@ -362,6 +392,9 @@ if ($options['pp_activate']==1)
 	$i_gplus = ($options['pp_gplus']=="1")?true:false; // Incluir por defecto el botón de Google Plus
 	$i_facebook = ($options['pp_facebook']=="1")?true:false; // Incluir por defecto el botón de Facebook
 	$i_linkedin = ($options['pp_linkedin']=="1")?true:false; // Incluir por defecto el botón de linkedin
+	$i_boxed = false;
+	$powered = ($options['pp_powered'] == "1")?false:true;
+	$underlined = ($options['pp_underlined'] == "1")?true:false;
 	// -------------------------------------
 	// Extraer y tratar los parámetros recibidos
 	extract(shortcode_atts(array(  
@@ -370,7 +403,8 @@ if ($options['pp_activate']==1)
 		 "via" => '',
 		 "vcgplus" => '',
 		 "vcfacebook" => '',
-		 "vclinkedin" => ''  
+		 "vclinkedin" => '',
+		 "vcboxed" => ''  
     ), $atts));
 	if ($go != 1) $directoa = false;
 	if ($text != '') $llamada = $text;
@@ -378,6 +412,7 @@ if ($options['pp_activate']==1)
 	if($vcgplus!='') $i_gplus = true;
 	if($vcfacebook!='') $i_facebook = true;
 	if($vclinkedin!='') $i_linkedin = true;
+	if($vcboxed!='') $i_boxed = true;
 	
 	
 	if ($content != null) {
@@ -385,13 +420,13 @@ if ($options['pp_activate']==1)
 		// Obtener un ID "Unico" para este piopis. Como no podemos controlarlo, al ser shortcode
 		//   lo que finalmente he decidido es usar el primer caracteres. Así, puedes piopiar lo que quieras
 		//   en un mismo post siempre que no coincida el primer caracter. mejoraré esta limitación ...
-		if ($directoa) $tagid = 'piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,1);
+		if ($directoa) $tagid = '#piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,1);
 		
 		// Obtener la URL codificada
-		$miurl = urlencode(get_permalink($post->ID).'#'.$tagid);
+		$miurl = urlencode(get_permalink($post->ID).$tagid);
 		
-		// Codificar el texto . Nos dejamos 94 caracteres en esta versión
-		$texto = urlencode('"'.substr(strip_tags($content),0,116-strlen($ivia)).'" '.$ivia.' ');
+		// Codificar el texto.
+			$texto = urlencode('"'.substr(strip_tags($content),0,116-strlen($ivia)).'" '.$ivia.' ');
 		
 		// Primero crear la etiqueta para enlazar directamente a este lugar
 		$ancla = $directoa ? '<a name="'.$tagid.'" id="'.$tagid.'"></a>':'';
@@ -421,7 +456,26 @@ if ($options['pp_activate']==1)
 			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" href="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
 		}
 		
-		return $ancla.'<span class="piopialo">'.$content.'</span>'.$enlace;
+		if ($i_boxed) {
+			$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
+			$returnval = $ancla.'<div class="piopialob">
+								<div class="piopialob-icon">
+											<img src="'.$iconurl.'" width="60" />
+								</div>
+								<div class="piopialob-text">
+											<span class="piopialob-frase">'.strip_tags($content).'</span><span class="piopialob-link">'.$enlace.'</span>
+								</div>';
+			if ($powered) {
+				$returnval .= '<div class="piopialob-powered">
+										<p><a href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+								</div>';
+			}
+			$returnval .= '</div>';
+		} else {
+			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
+			$returnval = $ancla.'<span class="piopialo"'.$subraya.'>'.$content.'</span>'.$enlace;
+		}
+		return $returnval;
 		
 	}
 	
@@ -439,7 +493,8 @@ function wptuts_add_buttons( $plugin_array ) {
     return $plugin_array;
 }
 function wptuts_register_buttons( $buttons ) {
-    array_push( $buttons, 'piopialo' ); 
+    array_push( $buttons, 'piopialo' );
+	array_push($buttons,'piopialob'); 
     return $buttons;
 }
 //Fin de registrar Botón

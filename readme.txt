@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable Tag: 1.0.3
+Stable Tag: 1.1
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -33,27 +33,38 @@ At the moment, this plugin includes:
 3. Example of piopialo.
 
 == Changelog ==
-- 1.0.2
---- Bug Fixes: Column Wordcount
-=== 1.0.1
-I forget to include the piopialo icon :(
-=== 1.0
-Added 2 new features:
-- Find comments not replied by author. Based on "Comments Not Replied To" (Original Plugin written by Pippin Williamson, Andrew Norcross, Tom McFarlin) but with some hacks. You can find comments not replied by his author in the last month.
-- Word Count column on posts page. Adds a column on the list posts admin page wich displays the word count of each post. Useful for compare comments by post length.
+= 1.1 =
+* New Feature: you can makes piopialo in a box using new editor button or by adding boxed="1" as a param
+* Added new config options.
 
-Added TinyMCE button for Piopialo. Now, add piopialo shortcode is very easy with the Editor Button.
+= 1.0.2 =
+* Bug Fixes: 
+	* Column Wordcount
 
-Bug Fixes
-=== 0.9
-Tested up to WordPress 3.9
-Now tracks piopialo's links if your are enabled midenlace on the config page.
-=== 0.8
-Added midenlace shortcode to easily track links con Google Analytics as Events. Supports both Classic and Universal Analytics
-=== 0.7
-Added support to include Bootstrap 3 on your Blog
-=== 0.6
-Solved issue on PHP Versions Older than 5.3.1
+= 1.0.1 =
+* I forget to include the piopialo icon :(
 
-=== 0.5
-First version: includes the possibility of insert “Font Awesome” on your blog. It also includes Scrollytics (track scroll on your posts and pages with Google Analytics) and Piopialo (share easely your posts on facebook, twitter and Google Plus using relevant sentences).
+= 1.0 =
+* Added 2 new features:
+	* Find comments not replied by author. Based on "Comments Not Replied To" (Original Plugin written by Pippin Williamson, Andrew Norcross, Tom McFarlin) but with some hacks. You can find comments not replied by his author in the last month.
+	* Word Count column on posts page. Adds a column on the list posts admin page wich displays the word count of each post. Useful for compare comments by post length.
+
+* Added TinyMCE button for Piopialo. Now, add piopialo shortcode is very easy with the Editor Button.
+
+* Bug Fixes
+
+= 0.9 =
+*Tested up to WordPress 3.9
+*Now tracks piopialo's links if your are enabled midenlace on the config page.
+
+= 0.8 =
+* Added midenlace shortcode to easily track links con Google Analytics as Events. Supports both Classic and Universal Analytics
+
+= 0.7 =
+* Added support to include Bootstrap 3 on your Blog
+
+= 0.6 =
+* Solved issue on PHP Versions Older than 5.3.1
+
+= 0.5 =
+* First version: includes the possibility of insert “Font Awesome” on your blog. It also includes Scrollytics (track scroll on your posts and pages with Google Analytics) and Piopialo (share easely your posts on facebook, twitter and Google Plus using relevant sentences).

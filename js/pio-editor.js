@@ -11,7 +11,7 @@
          */
         init : function(ed, url) {
 				 ed.addButton('piopialo', {
-								title : 'Piopialo',
+								title : 'Piopialo en Texto',
 								cmd : 'piopialo',
 								image : url + '/pi-icon.png'
 							});
@@ -19,8 +19,39 @@
 							ed.addCommand('piopialo', function() {
 								var selected_text = ed.selection.getContent();
 								var return_text = '';
-								return_text = '[piopialo]' + selected_text + '[/piopialo]';
-								ed.execCommand('mceInsertContent', 0, return_text);
+								// Avisamos si hay más de 100 caracteres
+								if (selected_text.length > 100) {
+									if (confirm('¡Cuidado! - La frase seleccionada supera los 100 caracteres por lo que es posible que no quepa en Tuit. ¿Seguro que deseas hacerla piopiable?')) {
+										return_text = '[piopialo]' + selected_text + '[/piopialo]';
+										ed.execCommand('mceInsertContent', 0, return_text);
+									}
+								} 
+								else {
+									return_text = '[piopialo]' + selected_text + '[/piopialo]';
+									ed.execCommand('mceInsertContent', 0, return_text);
+								}
+							});
+							
+						ed.addButton('piopialob', {
+								title : 'Piopialo en Caja',
+								cmd : 'piopialob',
+								image : url + '/pi-iconB.png'
+							});
+							
+							ed.addCommand('piopialob', function() {
+								var selected_text = ed.selection.getContent();
+								var return_text = '';
+								// Avisamos si hay más de 100 caracteres
+								if (selected_text.length > 100) {
+									if (confirm('¡Cuidado! - La frase seleccionada supera los 100 caracteres por lo que es posible que no quepa en Tuit. ¿Seguro que deseas hacerla piopiable?')) {
+										return_text = '[piopialo vcboxed="1"]' + selected_text + '[/piopialo]';
+										ed.execCommand('mceInsertContent', 0, return_text);
+									}
+								} 
+								else {
+									return_text = '[piopialo vcboxed="1"]' + selected_text + '[/piopialo]';
+									ed.execCommand('mceInsertContent', 0, return_text);
+								}
 							});
         },
  
