@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* CSS Document */
+.piopialob {
+	margin-top: 30px;
+	margin-bottom: 20px;
+	font-size: 40px;
+	color: #c0c0c0;
+	display: block;
+	clear: both;
+}
+.piopialob-text:hover {
+	-webkit-box-shadow: 0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+-moz-box-shadow:    0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+box-shadow:         0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+}
+.piopialob-icon {
+	width: 100%;
+	text-align: center;
+}
+.piopialob-icon img {
+	border-radius: 50%;
+	background-color: white;
+	border: 1px solid #c3c3c3;
+}
+.piopialob-text {
+	border: 1px solid #c3c3c3;
+	border-radius: 5px;
+	padding: 30px 20px 20px 20px;
+	margin-top: -40px;
+	margin-bottom: 20px;
+	font-size: 40px;
+	color: #c0c0c0;
+	font-weight: 100;
+}
+.piopialob-link {
+	font-size: 14px;
+	line-height: 40px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 20px;
+}
+.piopialob-powered {
+	font-size: 10px;
+	text-align: center;
+	margin-top: -20px;
+}
+
