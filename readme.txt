@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable Tag: 1.1
+Stable Tag: 1.1.1
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -33,6 +33,8 @@ At the moment, this plugin includes:
 3. Example of piopialo.
 
 == Changelog ==
+= 1.1.1 =
+* Some CSS improvements
 = 1.1 =
 * New Feature: you can makes piopialo in a box using new editor button or by adding boxed="1" as a param
 * Added new config options.
