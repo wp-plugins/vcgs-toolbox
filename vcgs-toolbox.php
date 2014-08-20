@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
- * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.2
+ * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
+ * Version: 1.2.5
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -37,6 +37,20 @@ function f_vcgstoolbox_page() {
 
 <div>
   <h2>Vcgs Toolbox - Pequeñas herramientas de la mano de Víctor Campuzano</h2>
+  <div style="float:right; border: 4px solid #690d46; border-radius: 20px; padding: 20px; text-align: center; color: #690d46;">
+  <p>¿Me ayudas con el desarrollo del plugin?</p>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="victor.campuzano@gmail.com">
+<input type="hidden" name="lc" value="ES">
+<input type="hidden" name="item_name" value="Ayudar al desarrollo de Vcgs-Toolbox">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="currency_code" value="EUR">
+<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
+<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+</form>
+</div>
   <p>Este es un sencillo plugin que incluye aquellas pequeñas herramientas creadas o recopiladas por <a href="http://www.vcgs.net/blog/" target="_blank"> Víctor Campuzano </a>.</p>
   <form action="options.php" method="post">
     <?php settings_fields('vcgstb_options'); ?>
@@ -353,7 +367,7 @@ if ($options['fa_activate']==1)
 {
 function registra_fontawesome() {
 
-	wp_register_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', false, false, 'all' );
+	wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', false, false, 'all' );
 	wp_enqueue_style( 'fontawesome' );
 
 }
@@ -417,22 +431,28 @@ if ($options['pp_activate']==1)
 	
 	if ($content != null) {
 		
+		// Necesitamos saber si esta llamada es para un feed y así cambiar la forma de publicar
+		$esfeed = is_feed();
+		
+		// Si es para un feed, los iconos no salen así que la llamada debe ser al menos algo.
+		if ( $llamada == '' && $esfeed ) { $llamada = ' piopialo '; }
+		
 		// Obtener un ID "Unico" para este piopis. Como no podemos controlarlo, al ser shortcode
 		//   lo que finalmente he decidido es usar el primer caracteres. Así, puedes piopiar lo que quieras
 		//   en un mismo post siempre que no coincida el primer caracter. mejoraré esta limitación ...
-		if ($directoa) $tagid = '#piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,1);
+		if ($directoa) $tagid = '#piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,4);
 		
 		// Obtener la URL codificada
 		$miurl = urlencode(get_permalink($post->ID).$tagid);
 		
 		// Codificar el texto.
-			$texto = urlencode('"'.substr(strip_tags($content),0,116-strlen($ivia)).'" '.$ivia.' ');
+		$texto = urlencode('"'.substr(strip_tags($content),0,116-strlen($ivia)).'" '.$ivia.' ');
 		
 		// Primero crear la etiqueta para enlazar directamente a este lugar
 		$ancla = $directoa ? '<a name="'.$tagid.'" id="'.$tagid.'"></a>':'';
 		
-		// Nuevo, si MideEnlace está activado, medimos el clic
-		if ($options['me_activate'] == '1')
+		// Nuevo, si MideEnlace está activado, medimos el clic. Pero no si es feed, porque no tiene sentido... 
+		if ($options['me_activate'] == '1' && !$esfeed)
 		{
 			$onclick = ' onClick="javascript:rMidEnlace(\'piopialo\', \''.get_the_title().'\', \''.strip_tags($content).'\');" ';
 		} else {
@@ -441,22 +461,22 @@ if ($options['pp_activate']==1)
 				
 		$enlace = '<a'.$onclick.' target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
-		if ($i_gplus)
+		if ($i_gplus && !$esfeed)
 		{
 			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piogplus" href="https://plus.google.com/share?url='.$miurl.'" title="En Google Plus"><i class="fa fa-google-plus-square"></i>&nbsp;</a>';
 		}
 		
-		if ($i_facebook)
+		if ($i_facebook && !$esfeed)
 		{
 			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="pioface" href="http://www.facebook.com/sharer/sharer.php?u='.$miurl.'" title="En Facebook"><i class="fa fa-facebook-square">&nbsp;</i></a>';
 		}
 		
-		if ($i_linkedin)
+		if ($i_linkedin && !$esfeed)
 		{
 			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" href="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
 		}
 		
-		if ($i_boxed) {
+		if ($i_boxed  && !$esfeed) {
 			$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
 			$returnval = $ancla.'<div class="piopialob">
 								<div class="piopialob-icon">
@@ -473,10 +493,9 @@ if ($options['pp_activate']==1)
 			$returnval .= '</div>';
 		} else {
 			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
-			$returnval = $ancla.'<span class="piopialo"'.$subraya.'>'.$content.'</span>'.$enlace;
+			$returnval .= $ancla.'<span class="piopialo"'.$subraya.'>'.$content.'</span>'.$enlace;
 		}
-		return $returnval;
-		
+		return $returnval;	
 	}
 	
 }
