@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.2.5
+ * Version: 1.3
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -254,6 +254,47 @@ function cope_activate_f() {
     echo $html;
 }
 
+function top_comment_authors($amount = 5, $dias=0) {
+global $wpdb;
+if ($dias > 0) { $datequery = ' AND comment_date BETWEEN CURDATE() - INTERVAL '.$dias.' DAY AND CURDATE() '; } else { $datequery = ''; }
+$results = $wpdb->get_results('
+    SELECT
+    COUNT(comment_author_email) AS comments_count, comment_author_email, comment_author, comment_author_url
+    FROM '.$wpdb->comments.'
+    WHERE comment_author_email != "" AND comment_author_email != "'.get_option( 'admin_email' ).'" AND comment_type = "" AND comment_approved = 1 '.$datequery.'
+    GROUP BY comment_author_email
+    ORDER BY comments_count DESC, comment_author ASC
+    LIMIT '.$amount
+);
+$output = "<ul>";
+foreach($results as $result) {
+    $output .= "<li><a href=\"".$result->comment_author_url."\" target=\"_blank\">".$result->comment_author." (".$result->comments_count." comentarios)</a></li>";
+}
+$output .= "</ul>";
+return $output;
+}
+
+add_settings_section('vcgstb_blogging', 'Blogging Hood - Descubre a tus comentaristas más activos', 'plugin_blogginhood_section_text', 'vcgs_toolbox');
+	function plugin_blogginhood_section_text(){
+		?>
+		<p>¿Sabes lo importantes que son los comentarios en tu blog? Seguro que si, que cada comentario te hará muchísima ilusión. <strong>Los comentaristas dan vida a un blog</strong>, son los lectores más valiosos que tienes. ¿Por qué no premiar a los más activos? Seguro que querrás agradecerles su fidelidad, ¿no?</p><p>Pues bien, lo primero que necesitas es conocer a los más activos de tu blog (por cantidad de comentarios). Aunque este sistema no es infalible, porque cuenta comentarios cuyo email coincida, te podrá ayudar a <strong>hacerte una idea de quienes son los comentaristas más activos de tu blog</strong>. Recuerda este post: <a href="http://www.vcgs.net/blog/como-ser-un-bloggin-hood/" target="_blank">Cómo ser un Blogging Hood</a>.</p>
+
+<div style="float: left; width: 30%;">
+<h3>Del Último mes</h3>
+<? echo top_comment_authors(20,30); ?>
+</div>
+<div style="float: left; width: 30%;">
+<h3>Últimos 3 meses</h3>
+<? echo top_comment_authors(20,180); ?>
+</div>
+<div style="float: left; width: 30%;">
+<h3>Desde siempre</h3>
+<? echo top_comment_authors(20,0); ?>
+</div>
+<div style="clear: both;"></div>
+<hr />
+<?php
+	}
 
 function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
