@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 3.9
 License: GPL2
-Stable tag: 1.3
+Stable tag: 1.4
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -33,7 +33,11 @@ At the moment, this plugin includes:
 
 3. Example of piopialo.
 
+4. Example of boxed piopialo
+
 == Changelog ==
+= 1.4 = 
+* Added support for ClickToTweet markup. Now you can use Piopialo and older ClickToTweet's phrases will be convereted. Please, activate this function on Settings->Vcgs Toolbox 
 = 1.3 =
 * Added New Feature: Know Who are your most active commenters. See Settings->Vcgs Toolbox
 = 1.2.5 =

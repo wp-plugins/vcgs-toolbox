@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.3
+ * Version: 1.4
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -202,6 +202,14 @@ function pp_powered_f() {
     echo $html;
 }
 
+add_settings_field('pp_ctt', 'Convertir también las frases de ClickToTweet', 'pp_ctt_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_ctt_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_ctt" name="vcgstb_options[pp_ctt]" value="1"' . checked( 1, $options['pp_ctt'], false ) . '/>';
+    $html .= '<label for="pp_ctt">¿Convertir también las frases de ClickToTweet?.</label><p><small>Si usabas ClickToTweet, tendrás muchos posts con su nomenclatura para hacer frases tuiteables. Esta opción te permite convertir automáticamente las frases de ClickToTweet a piopialos en caja. <span style="color: red;">Atención:</span> Para que esto funcione, deberás activar esta opción y desactivar el plugin ClickToTweet. Mientras no desactives el plugin seguirán apareciendo las cajas de ClickToTweet. Si alguna vez deseas volver a ClickToTweet, sólo tendrás que activarlo y seguirán funcionando.</small></p>';
+    echo $html;
+}
+
 // Comenzamos con la sección de Settings para Midenlace Shortcode
 add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
 	function plugin_midenlace_section_text(){
@@ -340,6 +348,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('pp_underlined',$input))
 	{
 		$input['pp_underlined'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('pp_ctt',$input))
+	{
+		$input['pp_ctt'] = '0';
 	}
 	if (!is_array($input) || !array_key_exists('fa_activate',$input))
 	{
@@ -558,6 +570,20 @@ function wptuts_register_buttons( $buttons ) {
     return $buttons;
 }
 //Fin de registrar Botón
+
+// Compatibilidad con ClickToTweet
+if ( ! class_exists( 'tm_clicktotweet' ) && $options["pp_ctt"] == 1 ) {
+		add_filter('the_content', 'CTTreplace_tags');
+		function CTTreplace_tags($content) {
+					$content = preg_replace_callback("/\[tweet \"(.*?)\"]/i", 'CTTweet', $content);
+					return $content;
+		}
+		
+		function CTTweet($matches) {
+			$text = $matches[1];
+			return '[piopialo vcboxed="1"]'.$text.'[/piopialo]';
+		}
+}
 
 }
 
