@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.4
+ * Version: 1.5
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -262,6 +262,23 @@ function cope_activate_f() {
     echo $html;
 }
 
+// Comenzamos con la sección de Settings para Añadir Featured Image
+add_settings_section('vcgstb_featimage', 'Relativo a la funcionalidad de Añadir la Imagen destacada en el Feed', 'plugin_featimage_section_text', 'vcgs_toolbox');
+	function plugin_featimage_section_text(){
+?>
+<p>Esta sección se refiere a si quieres activar la función por la cual <strong>vcgs-toolbox añadirá automáticamente la imagen destacada de tus posts a tu feed rss</strong>. Por defecto, la imagen destacada no está incluida en el cuerpo de un post cuando se consulta a través del feed, lo que puede provocar que tus posts no se vean muy bien cuando tus lectores usen Feedly o cualquier otro lector RSS. Activando esta opción te aseguras que la imagen destacada se insertará al principio de los posts y éstos se verán bien en las aplicaciones de los usuarios.</p>
+
+<?php
+	}
+
+add_settings_field('feati_activate', 'Añadir la Imagen destacada al principio del RSS', 'feati_activate_f', 'vcgs_toolbox', 'vcgstb_featimage');
+function feati_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="feati_activate" name="vcgstb_options[feati_activate]" value="1"' . checked( 1, $options['feati_activate'], false ) . '/>';
+    $html .= '<label for="feati_activate">Activa esta casilla si quieres que la imagen destacada de tus posts se añada al feed RSS.</label>';
+    echo $html;
+}
+
 function top_comment_authors($amount = 5, $dias=0) {
 global $wpdb;
 if ($dias > 0) { $datequery = ' AND comment_date BETWEEN CURDATE() - INTERVAL '.$dias.' DAY AND CURDATE() '; } else { $datequery = ''; }
@@ -308,6 +325,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
 	{
 		$input['sc_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('feati_activate',$input))
+	{
+		$input['feati_activate'] = '0';
 	}
 	if (!is_array($input) || !array_key_exists('bs_activate',$input))
 	{
@@ -623,6 +644,20 @@ if ($options["me_activate"]=='1')
 			return $devolver;
 		}
 }
-add_shortcode('midenlace', 'MiMidenlace');
-	
+add_shortcode('midenlace', 'MiMidenlace');	
+}
+
+// Esto es para el featured image
+
+if ($options['feati_activate']=='1') {
+	function vc_add_featured_image_to_feed($content) {
+		global $post;
+		if ( has_post_thumbnail( $post->ID ) ){
+			$content = '' . get_the_post_thumbnail( $post->ID, 'large' ) . '' . $content;
+		}
+		return $content;
+	}
+
+	add_filter('the_excerpt_rss', 'vc_add_featured_image_to_feed', 1000, 1);
+	add_filter('the_content_feed', 'vc_add_featured_image_to_feed', 1000, 1);
 }

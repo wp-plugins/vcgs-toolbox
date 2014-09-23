@@ -2,9 +2,9 @@
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
-Tested up to: 3.9
+Tested up to: 4.0
 License: GPL2
-Stable tag: 1.4
+Stable tag: 1.5
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -13,7 +13,8 @@ Very simple plugin that includes some awesome options, features, shortcodes and 
 
 At the moment, this plugin includes:
 <ul>
-<li><strong>New!</strong>Know Who are your best commenters on the settings pages.</li>
+<li><strong>New!</strong> Add Featured Image to RSS.</li>
+<li>Know Who are your best commenters on the settings pages.</li>
 <li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user does on every post or page.</li>
 <li><a href="http://www.vcgs.net/blog/piopialo-shortcode-para-tuitear-facilmente-frases-de-posts/" target="_blank">*Piopialo:*</a> Shortcode to convert easily relevant sentences in tweetable text.</li>
 <li><a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/">*Font Awesome:*</a> Includes the Font Awesome header code to use icons on your blog posts.</li>
@@ -36,6 +37,9 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.5 =
+* Added new Feature: Add Featured Image to Rss Feed.
+* Set as compatible with Wordpress 4.0
 = 1.4 = 
 * Added support for ClickToTweet markup. Now you can use Piopialo and older ClickToTweet's phrases will be convereted. Please, activate this function on Settings->Vcgs Toolbox 
 = 1.3 =
