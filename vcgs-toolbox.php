@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.5
+ * Version: 1.6
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -25,6 +25,15 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+// Add settings link on plugin page
+function your_plugin_settings_link($links) { 
+  $settings_link = '<a href="options-general.php?page=vcgs_toolbox">Settings</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
+}
+$plugin = plugin_basename(__FILE__); 
+add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
 
 // Registramos la página de opciones
 add_action('admin_menu', 'plugin_admin_add_page');
@@ -210,6 +219,14 @@ function pp_ctt_f() {
     echo $html;
 }
 
+add_settings_field('pp_tco', 'Añadir link para tuitear los comentarios', 'pp_tco_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_tco_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_tco" name="vcgstb_options[pp_tco]" value="1"' . checked( 1, $options['pp_tco'], false ) . '/>';
+    $html .= '<label for="pp_tco">¿Añadir enlace para tuitear también los comentarios?.</label><p><small>Si activas esta opción, se añadirá también un enlace para que tus lectores puedan tuitear también los comentarios que dejan entre sí. Además, si tienes instalado el plugin <a href="https://wordpress.org/plugins/twitter-comment-field/" target="_blank">Twitter Comment Field</a>, Vcgs Toolbox reconocerá el usuario de Twitter de quien comenta y lo mencionará en el tuit.</small></p>';
+    echo $html;
+}
+
 // Comenzamos con la sección de Settings para Midenlace Shortcode
 add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
 	function plugin_midenlace_section_text(){
@@ -384,6 +401,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('pp_via',$input))
 	{
 		$input['pp_via'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('pp_tco',$input))
+	{
+		$input['pp_tco'] = '';
 	}
 	if (!is_array($input) || !array_key_exists('copa_activate',$input))
 	{
@@ -604,6 +625,31 @@ if ( ! class_exists( 'tm_clicktotweet' ) && $options["pp_ctt"] == 1 ) {
 			$text = $matches[1];
 			return '[piopialo vcboxed="1"]'.$text.'[/piopialo]';
 		}
+}
+
+if($options['pp_tco']=="1")
+{
+add_filter( 'comment_text', 'modificar_comentario');
+function modificar_comentario( $text ){
+	
+	$options = get_option('vcgstb_options');
+	$ivia = $options['pp_via']; // Texto de firma / mención del Tuit
+	
+	// Obtener el Usuario de Twitter del que comenta
+	if( $commenttwitter = get_comment_meta( get_comment_ID(), 'twitter', true ) ) {
+		$tuitear=urlencode('Me ha gustado el comentario de @'.esc_attr($commenttwitter).' en este post '.$ivia);
+	}
+	else { 
+		$tuitear=urlencode('Me ha gustado este comentario en un post '.$ivia);
+	}
+	
+	// Obtener la URL directa del comentario
+	$url = urlencode(get_comment_link(get_comment_ID()));
+	
+	$enlace = '<p><a target="_blank" class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
+	
+	return $text.$enlace;
+}
 }
 
 }

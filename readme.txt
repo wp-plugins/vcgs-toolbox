@@ -2,9 +2,9 @@
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
-Tested up to: 4.0
+Tested up to: 4.0.1
 License: GPL2
-Stable tag: 1.5
+Stable tag: 1.6
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -13,7 +13,8 @@ Very simple plugin that includes some awesome options, features, shortcodes and 
 
 At the moment, this plugin includes:
 <ul>
-<li><strong>New!</strong> Add Featured Image to RSS.</li>
+<li><strong>New!</strong> Now you can add a "Tweet This" link to all of your comments.</li>
+<li>Add Featured Image to RSS.</li>
 <li>Know Who are your best commenters on the settings pages.</li>
 <li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user does on every post or page.</li>
 <li><a href="http://www.vcgs.net/blog/piopialo-shortcode-para-tuitear-facilmente-frases-de-posts/" target="_blank">*Piopialo:*</a> Shortcode to convert easily relevant sentences in tweetable text.</li>
@@ -37,6 +38,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.6 =
+* Added new Feature: Add "Theet This" links to your post comments. Users can tweet directly comments.
 = 1.5 =
 * Added new Feature: Add Featured Image to Rss Feed.
 * Set as compatible with Wordpress 4.0
