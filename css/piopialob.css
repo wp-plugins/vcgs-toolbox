@@ -78,3 +78,65 @@
 	margin-top: -20px;
 }
 
+
+/* Piopialo Reducido */
+.piopialobred {
+	/* Resetear Estilos */
+	margin: 0;
+	padding: 0;
+	word-wrap: break-word;
+	text-transform: none;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	text-transform: none;
+	/* ++++++++++ */
+	border: 1px solid #c3c3c3;
+	border-radius: 5px;
+	padding: 10px 10px 10px 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 200%;
+	line-height: 135%;
+	color: #c0c0c0;
+	font-weight: 100;
+	background-color: white;
+}
+.piopialobred:hover {
+	-webkit-box-shadow: 0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+	-moz-box-shadow:    0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+	box-shadow:         0px 0px 30px 1px rgba(125, 125, 125, 0.45);
+}
+.piopialobred-link {
+	/* Resetear Estilos */
+	margin: 0;
+	padding: 0;
+	position: relative;
+	word-wrap: break-word;
+	text-transform: none;
+	letter-spacing: 0.05em;
+	text-decoration: none;
+	text-transform: none;
+	/* ++++++++++ */
+	font-size: 50%;
+	line-height: 135%;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 20px;
+}
+.piopialobred-powered {
+	/* Resetear Estilos */
+	margin: 0;
+	padding: 0;
+	position: relative;
+	word-wrap: break-word;
+	text-transform: none;
+	letter-spacing: 0.05em;
+	text-decoration: none;
+	text-transform: none;
+	/* ++++++++++ */
+	font-size: 10px;
+	text-align: center;
+	margin: 10px 0px -20px 0px;
+}
+/* Fin del Reducido */
+

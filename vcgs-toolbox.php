@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.7
+ * Version: 1.8
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -42,25 +42,28 @@ add_options_page('VCGS Toolbox by Víctor Campuzano', 'VCGS Toolbox', 'manage_op
 }
 
 function f_vcgstoolbox_page() {
+	
 ?>
 
 <div>
   <h2>Vcgs Toolbox - Pequeñas herramientas de la mano de Víctor Campuzano</h2>
-  <div style="float:right; border: 4px solid #690d46; border-radius: 20px; padding: 20px; text-align: center; color: #690d46;">
-  <p>¿Me ayudas con el desarrollo del plugin?</p>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_donations">
-<input type="hidden" name="business" value="victor.campuzano@gmail.com">
-<input type="hidden" name="lc" value="ES">
-<input type="hidden" name="item_name" value="Ayudar al desarrollo de Vcgs-Toolbox">
-<input type="hidden" name="no_note" value="0">
-<input type="hidden" name="currency_code" value="EUR">
-<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
-<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
-<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
-</form>
-</div>
   <p>Este es un sencillo plugin que incluye aquellas pequeñas herramientas creadas o recopiladas por <a href="http://www.vcgs.net/blog/" target="_blank"> Víctor Campuzano </a>.</p>
+  <?php
+  	$tabs = array(
+  		'general' => 'General',
+		'piopialo' => 'Piopialo',
+		'bhood' => 'Blogging Hood'
+	);
+    echo '<div id="icon-themes" class="icon32"><br></div>';
+    echo '<h2 class="nav-tab-wrapper">';
+	$currentab = isset($_GET['tab'])?$_GET['tab']:'general';
+    foreach( $tabs as $tab => $name ){
+        $class = ( $tab == $currentab ) ? ' nav-tab-active' : '';
+        echo "<a class='nav-tab$class' href='?page=vcgs_toolbox&tab=$tab'>$name</a>";
+
+    }
+    echo '</h2>';
+	?>
   <form action="options.php" method="post">
     <?php settings_fields('vcgstb_options'); ?>
     <?php do_settings_sections('vcgs_toolbox'); ?>
@@ -72,7 +75,7 @@ function f_vcgstoolbox_page() {
 add_action('admin_init', 'plugin_admin_init');
 function plugin_admin_init(){
 	register_setting( 'vcgstb_options', 'vcgstb_options', 'vcgstb_validate_options' );
-	
+	if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 	add_settings_section('vcgstb_scrollytics', 'Relativos a Scrollytics', 'plugin_scrollytics_section_text', 'vcgs_toolbox');
 	function plugin_scrollytics_section_text(){
 ?>
@@ -95,8 +98,8 @@ function sc_single_f() {
     $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
     echo $html;
 }
-
-
+}
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Font Awesome
 add_settings_section('vcgstb_fontawesome', 'Relativo a Font Awesome', 'plugin_fontawesome_section_text', 'vcgs_toolbox');
 	function plugin_fontawesome_section_text(){
@@ -113,7 +116,9 @@ function fa_activate_f() {
     $html .= '<label for="fa_activate">Activa esta casilla si quieres que se incluya Font Awesome en tu blog.</label>';
     echo $html;
 }
+}
 
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Bootstrap
 add_settings_section('vcgstb_bootstrap', 'Relativo a BootStrap', 'plugin_bootstrap_section_text', 'vcgs_toolbox');
 	function plugin_bootstrap_section_text(){
@@ -130,7 +135,8 @@ function bs_activate_f() {
     $html .= '<label for="bs_activate">Activa esta casilla si quieres que se incluya Bootstrap en tu blog.</label>';
     echo $html;
 }
-
+}
+if ( isset($_GET['tab']) && $_GET['tab'] == 'piopialo') {
 // Comenzamos con la sección de Settings para Piopialo
 	add_settings_section('vcgstb_piopialo', 'Relativos al Shortcode Piopíalo', 'plugin_piopialo_section_text', 'vcgs_toolbox');
 	function plugin_piopialo_section_text(){
@@ -199,7 +205,7 @@ add_settings_field('pp_underlined', 'Subrayar Frase', 'pp_underlined_f', 'vcgs_t
 function pp_underlined_f() {
 	$options = get_option( 'vcgstb_options' );
     $html = '<input type="checkbox" id="pp_underlined" name="vcgstb_options[pp_underlined]" value="1"' . checked( 1, $options['pp_underlined'], false ) . '/>';
-    $html .= '<label for="pp_underlined">¿Deseas que las frases aparezcan subrayadas? Aunque esta propiedad se puede establecer mediante CSS, si no quieres tocar la hoja de estilos de tu Theme, puedes marcar esta casilla y las frases aparecerán subrayadas.</p>';
+    $html .= '<label for="pp_underlined">¿Deseas que las frases aparezcan subrayadas?<small><p>Aunque esta propiedad se puede establecer mediante CSS, si no quieres tocar la hoja de estilos de tu Theme, puedes marcar esta casilla y las frases aparecerán subrayadas.</small></p>';
     echo $html;
 }
 
@@ -227,6 +233,21 @@ function pp_tco_f() {
     echo $html;
 }
 
+// ** Versión 1.8 Opción de Temas de Piopialo en Caja
+add_settings_field('pp_theme','Tema por defecto para el Piopialo en Caja', 'pp_theme_f','vcgs_toolbox', 'vcgstb_piopialo');
+function pp_theme_f() {
+	$options = get_option( 'vcgstb_options' );
+     
+    $html = '<select id="pp_theme" name="vcgstb_options[pp_theme]">';
+        $html .= '<option value="original">Original</option>';
+        $html .= '<option value="reducido"' . selected( $options['pp_theme'], 'reducido', false) . '>Reducido</option>';
+    $html .= '</select>';
+	$html .= '<label for="pp_theme">¿Qué tema quieres usar para mostrar los Piopialo en Caja?.</label><p><small>He añadido dos tipos de cajas para el piopialo. El primero, original, es más visual, con el icono de twitter y el texto más grande. El segundo, reducido, ocupa menos espacio y no lleva tanta decoración. Esta opción por defecto se puede sobrescribir en cada instancia con los parámetros <code>theme="original"</code> para el tema original y <code>theme="reducido"</code> para el reducido.</small></p>';
+     
+    echo $html;
+}
+}
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Midenlace Shortcode
 add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
 	function plugin_midenlace_section_text(){
@@ -243,7 +264,8 @@ function me_activate_f() {
     $html .= '<label for="me_activate">Activa esta casilla si quieres activar el Shortcode Midenlace.</label>';
     echo $html;
 }
-
+}
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para la columna contadora de palabras
 add_settings_section('vcgstb_cpalabras', 'Relativo al contador de Palabras', 'plugin_cpalabras_section_text', 'vcgs_toolbox');
 	function plugin_cpalabras_section_text(){
@@ -260,7 +282,8 @@ function copa_activate_f() {
     $html .= '<label for="copa_activate">Activa esta casilla si quieres que aparezca la columna contadora de palabras.</label>';
     echo $html;
 }
-
+}
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para los comentarios sin responder
 add_settings_section('vcgstb_sinrespuesta', 'Relativo a la funcionalidad de Comentarios Sin Responder', 'plugin_sinrespuesta_section_text', 'vcgs_toolbox');
 	function plugin_sinrespuesta_section_text(){
@@ -279,6 +302,8 @@ function cope_activate_f() {
     echo $html;
 }
 
+}
+if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Añadir Featured Image
 add_settings_section('vcgstb_featimage', 'Relativo a la funcionalidad de Añadir la Imagen destacada en el Feed', 'plugin_featimage_section_text', 'vcgs_toolbox');
 	function plugin_featimage_section_text(){
@@ -295,7 +320,7 @@ function feati_activate_f() {
     $html .= '<label for="feati_activate">Activa esta casilla si quieres que la imagen destacada de tus posts se añada al feed RSS.</label>';
     echo $html;
 }
-
+}
 function top_comment_authors($amount = 5, $dias=0) {
 global $wpdb;
 if ($dias > 0) { $datequery = ' AND comment_date BETWEEN CURDATE() - INTERVAL '.$dias.' DAY AND CURDATE() '; } else { $datequery = ''; }
@@ -315,7 +340,7 @@ foreach($results as $result) {
 $output .= "</ul>";
 return $output;
 }
-
+if ( isset($_GET['tab']) && $_GET['tab'] == 'bhood') {
 add_settings_section('vcgstb_blogging', 'Blogging Hood - Descubre a tus comentaristas más activos', 'plugin_blogginhood_section_text', 'vcgs_toolbox');
 	function plugin_blogginhood_section_text(){
 		?>
@@ -337,6 +362,7 @@ add_settings_section('vcgstb_blogging', 'Blogging Hood - Descubre a tus comentar
 <hr />
 <?php
 	}
+}
 
 function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
@@ -414,6 +440,10 @@ function vcgstb_validate_options($input) {
 	{
 		$input['cope_activate'] = '';
 	}
+	if (!is_array($input) || !array_key_exists('pp_theme',$input))
+	{
+		$input['pp_theme'] = 'original';
+	}
 	return $input;
 }
 
@@ -462,7 +492,7 @@ if ($options['fa_activate']==1)
 {
 function registra_fontawesome() {
 
-	wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', false, false, 'all' );
+	wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', false, false, 'all' );
 	wp_enqueue_style( 'fontawesome' );
 
 }
@@ -474,8 +504,8 @@ add_action( 'wp_enqueue_scripts', 'registra_fontawesome' );
 if (is_page() && $options['bs_activate']==1)
 {
 	function registra_bootstrap() {
-		wp_register_style('bootstrap_css','//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css', false, false, 'all');
-		wp_register_script( 'bootstrap_js', '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js', array( 'jquery' ), false, false );
+		wp_register_style('bootstrap_css','//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css', false, false, 'all');
+		wp_register_script( 'bootstrap_js', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js', array( 'jquery' ), false, false );
 		wp_enqueue_style('bootstrap_css');
 		wp_enqueue_script('bootstrap_js');
 	}
@@ -504,6 +534,7 @@ if ($options['pp_activate']==1)
 	$i_boxed = false;
 	$powered = ($options['pp_powered'] == "1")?false:true;
 	$underlined = ($options['pp_underlined'] == "1")?true:false;
+	$itheme = $options['pp_theme'];
 	// -------------------------------------
 	// Extraer y tratar los parámetros recibidos
 	extract(shortcode_atts(array(  
@@ -513,7 +544,8 @@ if ($options['pp_activate']==1)
 		 "vcgplus" => '',
 		 "vcfacebook" => '',
 		 "vclinkedin" => '',
-		 "vcboxed" => ''  
+		 "vcboxed" => '',
+		 "theme" => ''  
     ), $atts));
 	if ($go != 1) $directoa = false;
 	if ($text != '') $llamada = $text;
@@ -522,6 +554,7 @@ if ($options['pp_activate']==1)
 	if($vcfacebook!='') $i_facebook = true;
 	if($vclinkedin!='') $i_linkedin = true;
 	if($vcboxed!='') $i_boxed = true;
+	if ($theme != '') $itheme = $theme;
 	
 	
 	if ($content != null) {
@@ -572,20 +605,34 @@ if ($options['pp_activate']==1)
 		}
 		
 		if ($i_boxed  && !$esfeed) {
-			$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
-			$returnval = $ancla.'<div class="piopialob">
-								<div class="piopialob-icon">
-											<img src="'.$iconurl.'" width="60" />
-								</div>
-								<div class="piopialob-text">
-											<span class="piopialob-frase">'.strip_tags($content).'</span><span class="piopialob-link">'.$enlace.'</span>
-								</div>';
-			if ($powered) {
-				$returnval .= '<div class="piopialob-powered">
-										<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
-								</div>';
+			if ($itheme == 'original') 
+			{
+				$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
+				$returnval = $ancla.'<div class="piopialob">
+									<div class="piopialob-icon">
+												<img src="'.$iconurl.'" width="60" />
+									</div>
+									<div class="piopialob-text">
+												<span class="piopialob-frase">'.strip_tags($content).'</span><span class="piopialob-link">'.$enlace.'</span>
+									</div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialob-powered">
+											<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+									</div>';
+				}
+				$returnval .= '</div>';
+			} elseif ($itheme == 'reducido') {
+				$returnval = $ancla.'<div class="piopialobred">
+									<div class="piopialobred-text">
+												<span class="piopialobred-frase">'.strip_tags($content).'</span><span class="piopialobred-link">'.$enlace.'</span>
+									</div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobred-powered">
+											<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+									</div>';
+				}
+				$returnval .= '</div>';
 			}
-			$returnval .= '</div>';
 		} else {
 			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
 			$returnval .= $ancla.'<span class="piopialo"'.$subraya.'>'.$content.'</span>'.$enlace;

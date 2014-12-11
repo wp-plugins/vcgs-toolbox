@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 4.0.1
 License: GPL2
-Stable tag: 1.7
+Stable tag: 1.8
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,11 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.8 =
+* Updated Font Awesome to 4.2.0 version
+* Updated BootStrap to 3.3.1 version (This feature will be deprecated soon on Vcgs Toolbox).
+* Added tabs to settings Page.
+* Added both "original" and "reduced" themes to Piopialo Boxed. Now you can select your display preference.
 = 1.7 =
 * Now, Piopialo's links are rel=nofollow. Thanks to JaviEn (http://www.monetizados.com)
 = 1.6 =
