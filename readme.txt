@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 4.0.1
 License: GPL2
-Stable tag: 1.8
+Stable tag: 1.8.1
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.8.1 =
+* Bug Fixed 
 = 1.8 =
 * Updated Font Awesome to 4.2.0 version
 * Updated BootStrap to 3.3.1 version (This feature will be deprecated soon on Vcgs Toolbox).
