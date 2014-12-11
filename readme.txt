@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 4.0.1
 License: GPL2
-Stable tag: 1.6
+Stable tag: 1.7
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -15,12 +15,12 @@ At the moment, this plugin includes:
 <ul>
 <li><strong>New!</strong> Now you can add a "Tweet This" link to all of your comments.</li>
 <li>Add Featured Image to RSS.</li>
-<li>Know Who are your best commenters on the settings pages.</li>
+<li>Know Who are your best commentators in the settings pages.</li>
 <li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user does on every post or page.</li>
 <li><a href="http://www.vcgs.net/blog/piopialo-shortcode-para-tuitear-facilmente-frases-de-posts/" target="_blank">*Piopialo:*</a> Shortcode to convert easily relevant sentences in tweetable text.</li>
 <li><a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/">*Font Awesome:*</a> Includes the Font Awesome header code to use icons on your blog posts.</li>
 <li><a href="http://getbootstrap.com/" target="_blank">*Bootstrap*:</a> Includes the Bootstrap from Twitter to use ON PAGES. You can use Layouit tu build great pages using Bootstrap.</li>
-<li><a href="http://www.vcgs.net/blog/midenlace-registra-clics-como-eventos-en-google-analytics/" target="_blank">*Midenlace*:</a> A simple shortcode to easily track clicks of a link on Google Analytics.</li>
+<li><a href="http://www.vcgs.net/blog/midenlace-registra-clics-como-eventos-en-google-analytics/" target="_blank">*Midenlace*:</a> A simple shortcode to easy track clicks of a link on Google Analytics.</li>
 </ul>
 
 == Installation ==
@@ -38,6 +38,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.7 =
+* Now, Piopialo's links are rel=nofollow. Thanks to JaviEn (http://www.monetizados.com)
 = 1.6 =
 * Added new Feature: Add "Theet This" links to your post comments. Users can tweet directly comments.
 = 1.5 =

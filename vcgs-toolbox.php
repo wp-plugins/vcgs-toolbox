@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.6
+ * Version: 1.7
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -554,7 +554,7 @@ if ($options['pp_activate']==1)
 			$onclick = '';
 		}
 				
-		$enlace = '<a'.$onclick.' target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
+		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
 		if ($i_gplus && !$esfeed)
 		{
@@ -582,7 +582,7 @@ if ($options['pp_activate']==1)
 								</div>';
 			if ($powered) {
 				$returnval .= '<div class="piopialob-powered">
-										<p><a href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+										<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
 								</div>';
 			}
 			$returnval .= '</div>';
@@ -646,7 +646,7 @@ function modificar_comentario( $text ){
 	// Obtener la URL directa del comentario
 	$url = urlencode(get_comment_link(get_comment_ID()));
 	
-	$enlace = '<p><a target="_blank" class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
+	$enlace = '<p><a rel="nofollow" target="_blank" class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
 	
 	return $text.$enlace;
 }
