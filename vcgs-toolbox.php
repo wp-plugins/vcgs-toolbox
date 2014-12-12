@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.8.1
+ * Version: 1.8.2
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -48,22 +48,6 @@ function f_vcgstoolbox_page() {
 <div>
   <h2>Vcgs Toolbox - Pequeñas herramientas de la mano de Víctor Campuzano</h2>
   <p>Este es un sencillo plugin que incluye aquellas pequeñas herramientas creadas o recopiladas por <a href="http://www.vcgs.net/blog/" target="_blank"> Víctor Campuzano </a>.</p>
-  <?php
-  	$tabs = array(
-  		'general' => 'General',
-		'piopialo' => 'Piopialo',
-		'bhood' => 'Blogging Hood'
-	);
-    echo '<div id="icon-themes" class="icon32"><br></div>';
-    echo '<h2 class="nav-tab-wrapper">';
-	$currentab = isset($_GET['tab'])?$_GET['tab']:'general';
-    foreach( $tabs as $tab => $name ){
-        $class = ( $tab == $currentab ) ? ' nav-tab-active' : '';
-        echo "<a class='nav-tab$class' href='?page=vcgs_toolbox&tab=$tab'>$name</a>";
-
-    }
-    echo '</h2>';
-	?>
   <form action="options.php" method="post">
     <?php settings_fields('vcgstb_options'); ?>
     <?php do_settings_sections('vcgs_toolbox'); ?>
@@ -75,7 +59,6 @@ function f_vcgstoolbox_page() {
 add_action('admin_init', 'plugin_admin_init');
 function plugin_admin_init(){
 	register_setting( 'vcgstb_options', 'vcgstb_options', 'vcgstb_validate_options' );
-	if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 	add_settings_section('vcgstb_scrollytics', 'Relativos a Scrollytics', 'plugin_scrollytics_section_text', 'vcgs_toolbox');
 	function plugin_scrollytics_section_text(){
 ?>
@@ -98,8 +81,6 @@ function sc_single_f() {
     $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
     echo $html;
 }
-}
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Font Awesome
 add_settings_section('vcgstb_fontawesome', 'Relativo a Font Awesome', 'plugin_fontawesome_section_text', 'vcgs_toolbox');
 	function plugin_fontawesome_section_text(){
@@ -116,9 +97,7 @@ function fa_activate_f() {
     $html .= '<label for="fa_activate">Activa esta casilla si quieres que se incluya Font Awesome en tu blog.</label>';
     echo $html;
 }
-}
 
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para Bootstrap
 add_settings_section('vcgstb_bootstrap', 'Relativo a BootStrap', 'plugin_bootstrap_section_text', 'vcgs_toolbox');
 	function plugin_bootstrap_section_text(){
@@ -135,8 +114,6 @@ function bs_activate_f() {
     $html .= '<label for="bs_activate">Activa esta casilla si quieres que se incluya Bootstrap en tu blog.</label>';
     echo $html;
 }
-}
-if ( isset($_GET['tab']) && $_GET['tab'] == 'piopialo') {
 // Comenzamos con la sección de Settings para Piopialo
 	add_settings_section('vcgstb_piopialo', 'Relativos al Shortcode Piopíalo', 'plugin_piopialo_section_text', 'vcgs_toolbox');
 	function plugin_piopialo_section_text(){
@@ -246,8 +223,7 @@ function pp_theme_f() {
      
     echo $html;
 }
-}
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
+
 // Comenzamos con la sección de Settings para Midenlace Shortcode
 add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
 	function plugin_midenlace_section_text(){
@@ -264,8 +240,6 @@ function me_activate_f() {
     $html .= '<label for="me_activate">Activa esta casilla si quieres activar el Shortcode Midenlace.</label>';
     echo $html;
 }
-}
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para la columna contadora de palabras
 add_settings_section('vcgstb_cpalabras', 'Relativo al contador de Palabras', 'plugin_cpalabras_section_text', 'vcgs_toolbox');
 	function plugin_cpalabras_section_text(){
@@ -282,8 +256,6 @@ function copa_activate_f() {
     $html .= '<label for="copa_activate">Activa esta casilla si quieres que aparezca la columna contadora de palabras.</label>';
     echo $html;
 }
-}
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
 // Comenzamos con la sección de Settings para los comentarios sin responder
 add_settings_section('vcgstb_sinrespuesta', 'Relativo a la funcionalidad de Comentarios Sin Responder', 'plugin_sinrespuesta_section_text', 'vcgs_toolbox');
 	function plugin_sinrespuesta_section_text(){
@@ -302,8 +274,7 @@ function cope_activate_f() {
     echo $html;
 }
 
-}
-if ( !isset($_GET['tab']) || $_GET['tab'] == 'general') {
+
 // Comenzamos con la sección de Settings para Añadir Featured Image
 add_settings_section('vcgstb_featimage', 'Relativo a la funcionalidad de Añadir la Imagen destacada en el Feed', 'plugin_featimage_section_text', 'vcgs_toolbox');
 	function plugin_featimage_section_text(){
@@ -319,7 +290,6 @@ function feati_activate_f() {
     $html = '<input type="checkbox" id="feati_activate" name="vcgstb_options[feati_activate]" value="1"' . checked( 1, $options['feati_activate'], false ) . '/>';
     $html .= '<label for="feati_activate">Activa esta casilla si quieres que la imagen destacada de tus posts se añada al feed RSS.</label>';
     echo $html;
-}
 }
 function top_comment_authors($amount = 5, $dias=0) {
 global $wpdb;
