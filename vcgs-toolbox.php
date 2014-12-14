@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.8.2
+ * Version: 1.8.3
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -632,7 +632,7 @@ function wptuts_register_buttons( $buttons ) {
 
 // Compatibilidad con ClickToTweet
 if ( ! class_exists( 'tm_clicktotweet' ) && $options["pp_ctt"] == 1 ) {
-		add_filter('the_content', 'CTTreplace_tags');
+		add_filter('the_content', 'CTTreplace_tags',1);
 		function CTTreplace_tags($content) {
 					$content = preg_replace_callback("/\[tweet \"(.*?)\"]/i", 'CTTweet', $content);
 					return $content;

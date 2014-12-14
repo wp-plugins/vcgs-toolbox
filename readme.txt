@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
 Tested up to: 4.0.1
 License: GPL2
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.8.3 =
+* Solved problem with CTT Compatibility. Thanks to Carlos Girón.
 = 1.8.2 =
 * Bug Fixed: Settings Tabs causes lost of some configurations. Revert Settings to one page onlye.
 = 1.8.1 =
