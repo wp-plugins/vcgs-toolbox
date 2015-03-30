@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.8.3
+ * Version: 1.9
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -218,8 +218,10 @@ function pp_theme_f() {
     $html = '<select id="pp_theme" name="vcgstb_options[pp_theme]">';
         $html .= '<option value="original">Original</option>';
         $html .= '<option value="reducido"' . selected( $options['pp_theme'], 'reducido', false) . '>Reducido</option>';
+		$html .= '<option value="moderno"' . selected( $options['pp_theme'], 'moderno', false) . '>Moderno</option>';
+		$html .= '<option value="modernoGris"' . selected( $options['pp_theme'], 'modernoGris', false) . '>Moderno en Gris</option>';
     $html .= '</select>';
-	$html .= '<label for="pp_theme">¿Qué tema quieres usar para mostrar los Piopialo en Caja?.</label><p><small>He añadido dos tipos de cajas para el piopialo. El primero, original, es más visual, con el icono de twitter y el texto más grande. El segundo, reducido, ocupa menos espacio y no lleva tanta decoración. Esta opción por defecto se puede sobrescribir en cada instancia con los parámetros <code>theme="original"</code> para el tema original y <code>theme="reducido"</code> para el reducido.</small></p>';
+	$html .= '<label for="pp_theme">¿Qué tema quieres usar para mostrar los Piopialo en Caja?.</label><p><small>Escoge la apariencia de los piopialos en caja. El primero, original, es más visual, con el icono de twitter y el texto más grande. El segundo, reducido, ocupa menos espacio y no lleva tanta decoración. El tema Moderno ofrece una caja con un azul intenso y una transición sutil de fondo. Por último, el Moderno en Gris, ofrece lo mismo que el anterior pero una transición más espectacular de fondo gris a Azul. Esta opción por defecto se puede sobrescribir en cada instancia con los parámetros <code>theme="original"</code> para el tema original, <code>theme="reducido"</code> para el reducido, <code>theme="moderno"</code> para el Moderno y <code>theme="modernoGris"</code> para el Moderno en Gris.</small></p>';
      
     echo $html;
 }
@@ -489,6 +491,14 @@ if ($options['pp_activate']==1)
 		wp_enqueue_style('piopialob_style');
 	}
 	add_action( 'wp_enqueue_scripts', 'add_piopialob_styles' ); 
+	
+	function carga_piopialo() {
+		wp_register_script( 'piopialo', plugins_url( '/js/piopialo.js' , __FILE__ ), array( 'jquery' ), false, true );
+		wp_enqueue_script( 'piopialo' );
+	}
+	
+	// Hook into the 'wp_enqueue_scripts' action
+	add_action( 'wp_enqueue_scripts', 'carga_piopialo' );
 
 	
 	function MiPiopialo($atts, $content = null) {
@@ -556,25 +566,25 @@ if ($options['pp_activate']==1)
 		} else {
 			$onclick = '';
 		}
-				
-		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
+		$solotuit = 'http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl;
+		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" data-piolink="'.$solotuit.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
 		if ($i_gplus && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piogplus" href="https://plus.google.com/share?url='.$miurl.'" title="En Google Plus"><i class="fa fa-google-plus-square"></i>&nbsp;</a>';
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piogplus" data-piolink="https://plus.google.com/share?url='.$miurl.'" title="En Google Plus"><i class="fa fa-google-plus-square"></i>&nbsp;</a>';
 		}
 		
 		if ($i_facebook && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="pioface" href="http://www.facebook.com/sharer/sharer.php?u='.$miurl.'" title="En Facebook"><i class="fa fa-facebook-square">&nbsp;</i></a>';
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="pioface" data-piolink="http://www.facebook.com/sharer/sharer.php?u='.$miurl.'" title="En Facebook"><i class="fa fa-facebook-square">&nbsp;</i></a>';
 		}
 		
 		if ($i_linkedin && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" href="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" data-piolink="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
 		}
 		
-		if ($i_boxed  && !$esfeed) {
+		if ($i_boxed && !$esfeed) {
 			if ($itheme == 'original' || $itheme == '') 
 			{
 				$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
@@ -587,7 +597,7 @@ if ($options['pp_activate']==1)
 									</div>';
 				if ($powered) {
 					$returnval .= '<div class="piopialob-powered">
-											<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
 									</div>';
 				}
 				$returnval .= '</div>';
@@ -598,14 +608,36 @@ if ($options['pp_activate']==1)
 									</div>';
 				if ($powered) {
 					$returnval .= '<div class="piopialobred-powered">
-											<p><a rel="nofollow" href="https://wordpress.org/plugins/vcgs-toolbox/" target="_blank">Powered by Vcgs-Toolbox</a></p>
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/" >Powered by Vcgs-Toolbox</span></p>
 									</div>';
 				}
 				$returnval .= '</div>';
+			} elseif ($itheme == 'moderno') {
+				$returnval = $ancla.'<div class="piopialobmod" data-piolink="'.$solotuit.'">
+									<div class="piopialobmod-text">
+												<span class="piopialobmod-frase">'.strip_tags($content).'</span><span class="piopialobmod-link">'.$enlace.'</span>
+									</div></div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobmod-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+	//			$returnval .= '</div>';
+			} elseif ($itheme == 'modernoGris') {
+				$returnval = $ancla.'<div class="piopialobmodgris hvr-bounce-to-bottom" data-piolink="'.$solotuit.'">
+									<div class="piopialobmodgris-text">
+												<span class="piopialobmodgris-frase">'.strip_tags($content).'</span><span class="piopialobmodgris-link">'.$enlace.'</span>
+									</div></div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobmodgris-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+	//			$returnval .= '</div>';
 			}
 		} else {
 			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
-			$returnval .= $ancla.'<span class="piopialo"'.$subraya.'>'.$content.'</span>'.$enlace;
+			$returnval .= $ancla.'<span class="piopialo"'.$subraya.' data-piolink="'.$solotuit.'">'.$content.'</span>'.$enlace;
 		}
 		return $returnval;	
 	}
@@ -663,7 +695,7 @@ function modificar_comentario( $text ){
 	// Obtener la URL directa del comentario
 	$url = urlencode(get_comment_link(get_comment_ID()));
 	
-	$enlace = '<p><a rel="nofollow" target="_blank" class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
+	$enlace = '<p><span class="piopialo-comment" data-piolink="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></span></p>';
 	
 	return $text.$enlace;
 }
