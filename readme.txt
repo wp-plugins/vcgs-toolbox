@@ -2,9 +2,9 @@
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.6
-Tested up to: 4.0.1
+Tested up to: 4.1.1
 License: GPL2
-Stable tag: 1.9
+Stable tag: 1.9.1
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
