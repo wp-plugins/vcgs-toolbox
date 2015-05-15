@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
- * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for conig options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 0.5
+ * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
+ * Version: 1.9.3
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -26,6 +26,15 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+// Add settings link on plugin page
+function your_plugin_settings_link($links) { 
+  $settings_link = '<a href="options-general.php?page=vcgs_toolbox">Settings</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
+}
+$plugin = plugin_basename(__FILE__); 
+add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
+
 // Registramos la página de opciones
 add_action('admin_menu', 'plugin_admin_add_page');
 function plugin_admin_add_page() {
@@ -33,6 +42,7 @@ add_options_page('VCGS Toolbox by Víctor Campuzano', 'VCGS Toolbox', 'manage_op
 }
 
 function f_vcgstoolbox_page() {
+	
 ?>
 
 <div>
@@ -46,7 +56,6 @@ function f_vcgstoolbox_page() {
 </div>
 <?php
 }
-
 add_action('admin_init', 'plugin_admin_init');
 function plugin_admin_init(){
 	register_setting( 'vcgstb_options', 'vcgstb_options', 'vcgstb_validate_options' );
@@ -54,6 +63,7 @@ function plugin_admin_init(){
 	function plugin_scrollytics_section_text(){
 ?>
 <p>Esta sección se refiere a incluir o no la Monitorización del Scroll de tus posts a través de Google Analytics. Puedes encontrar información detallada sobre esto en este post de mi blog: <a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">Scrollytics</a>.</p>
+
 <?php
 	}
 
@@ -64,10 +74,19 @@ function sc_activate_f() {
     $html .= '<label for="sc_activate">Activa esta casilla si quieres que se registre en Google Analytics el Scroll que hacen tus visitantes.</label>';
     echo $html;
 }
+add_settings_field('sc_single', 'Sólo en Páginas/Posts', 'sc_single_f', 'vcgs_toolbox', 'vcgstb_scrollytics');
+function sc_single_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="sc_single" name="vcgstb_options[sc_single]" value="1"' . checked( 1, $options['sc_single'], false ) . '/>';
+    $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
+    echo $html;
+}
+// Comenzamos con la sección de Settings para Font Awesome
 add_settings_section('vcgstb_fontawesome', 'Relativo a Font Awesome', 'plugin_fontawesome_section_text', 'vcgs_toolbox');
 	function plugin_fontawesome_section_text(){
 ?>
 <p>Esta sección se refiere a incluir o no los scripts de Font Awesome que te permitirán usar la nomenclatura  para mostrar iconos de Font Awesome en tus posts. Puedes ver un vídeo y ejemplos en mi post: <a href="http://www.vcgs.net/blog/posticoning-mejorar-aspecto-posts-con-iconos/" target="_blank">Posticoning</a>..</p>
+
 <?php
 	}
 
@@ -78,15 +97,24 @@ function fa_activate_f() {
     $html .= '<label for="fa_activate">Activa esta casilla si quieres que se incluya Font Awesome en tu blog.</label>';
     echo $html;
 }
-add_settings_field('sc_single', 'Sólo en Páginas/Posts', 'sc_single_f', 'vcgs_toolbox', 'vcgstb_scrollytics');
-function sc_single_f() {
+
+// Comenzamos con la sección de Settings para Bootstrap
+add_settings_section('vcgstb_bootstrap', 'Relativo a BootStrap', 'plugin_bootstrap_section_text', 'vcgs_toolbox');
+	function plugin_bootstrap_section_text(){
+?>
+<p>Esta sección se refiere a incluir o no los scripts de cabecera de Bootstrap para poder aprovechar todo su potencial dentro de nuestras páginas. Por poner un ejemplo, puedes ver cómo aprovecharlo en este post, utilizando la utilizadad Layoutit. <strong>¡Cuidado! -> Esta configuración puede provocar algun problema con tu Theme. Si, tras activarlo, observas resultados que no te cuadran, desactívalo enseguida.</strong></p>
+
+<?php
+	}
+
+add_settings_field('bs_activate', 'Activar BootStrap', 'bs_activate_f', 'vcgs_toolbox', 'vcgstb_bootstrap');
+function bs_activate_f() {
 	$options = get_option( 'vcgstb_options' );
-    $html = '<input type="checkbox" id="sc_single" name="vcgstb_options[sc_single]" value="1"' . checked( 1, $options['sc_single'], false ) . '/>';
-    $html .= '<label for="sc_activate">Activa esta casilla si quieres que sólo se registre el scroll en posts y páginas. Desactívala para registrar también páginas de autor, etiquetas, categorías, etc...</label>';
+    $html = '<input type="checkbox" id="bs_activate" name="vcgstb_options[bs_activate]" value="1"' . checked( 1, $options['bs_activate'], false ) . '/>';
+    $html .= '<label for="bs_activate">Activa esta casilla si quieres que se incluya Bootstrap en tu blog.</label>';
     echo $html;
 }
-
-// Comenzamos con la sección se Settings para Piopialo
+// Comenzamos con la sección de Settings para Piopialo
 	add_settings_section('vcgstb_piopialo', 'Relativos al Shortcode Piopíalo', 'plugin_piopialo_section_text', 'vcgs_toolbox');
 	function plugin_piopialo_section_text(){
 ?>
@@ -94,6 +122,7 @@ function sc_single_f() {
 <p>El uso del piopialo es sencillo:</p>
 <p>Encierra la frase que quieres que sea "piopiable" así: <code>[piopialo <opciones>]aquí la frase que quieres que sea clicable[/piopialo]</code>. Este sencillo código utilizará las opciones por defecto que puedes especificar aquí.</p>
 <p>Además, para cada caso concreto (cada frase en concreto) puedes especifciar las opciones siguientes:</p>
+
 <?php
 	}
 
@@ -149,11 +178,187 @@ function pp_linkedin_f() {
     echo $html;
 }
 
+add_settings_field('pp_underlined', 'Subrayar Frase', 'pp_underlined_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_underlined_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_underlined" name="vcgstb_options[pp_underlined]" value="1"' . checked( 1, $options['pp_underlined'], false ) . '/>';
+    $html .= '<label for="pp_underlined">¿Deseas que las frases aparezcan subrayadas?<small><p>Aunque esta propiedad se puede establecer mediante CSS, si no quieres tocar la hoja de estilos de tu Theme, puedes marcar esta casilla y las frases aparecerán subrayadas.</small></p>';
+    echo $html;
+}
+
+add_settings_field('pp_powered', 'Eliminar firma de Vcgs-Toolbox', 'pp_powered_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_powered_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_powered" name="vcgstb_options[pp_powered]" value="1"' . checked( 1, $options['pp_powered'], false ) . '/>';
+    $html .= '<label for="pp_powered">¿Eliminar la firma Powered By de debajo de las Cajas de Piopialo?.</label><p><small>En los piopialos que van encerrados en cajas, se añade por defecto un enlace hacia el plugin. Si quieres puedes eliminarlo aunque, si lo dejas, contribuirás a que el plugin se descargue por más gente y yo te lo agradeceré mucho.</small></p>';
+    echo $html;
+}
+
+add_settings_field('pp_ctt', 'Convertir también las frases de ClickToTweet', 'pp_ctt_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_ctt_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_ctt" name="vcgstb_options[pp_ctt]" value="1"' . checked( 1, $options['pp_ctt'], false ) . '/>';
+    $html .= '<label for="pp_ctt">¿Convertir también las frases de ClickToTweet?.</label><p><small>Si usabas ClickToTweet, tendrás muchos posts con su nomenclatura para hacer frases tuiteables. Esta opción te permite convertir automáticamente las frases de ClickToTweet a piopialos en caja. <span style="color: red;">Atención:</span> Para que esto funcione, deberás activar esta opción y desactivar el plugin ClickToTweet. Mientras no desactives el plugin seguirán apareciendo las cajas de ClickToTweet. Si alguna vez deseas volver a ClickToTweet, sólo tendrás que activarlo y seguirán funcionando.</small></p>';
+    echo $html;
+}
+
+add_settings_field('pp_tco', 'Añadir link para tuitear los comentarios', 'pp_tco_f', 'vcgs_toolbox', 'vcgstb_piopialo');
+function pp_tco_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="pp_tco" name="vcgstb_options[pp_tco]" value="1"' . checked( 1, $options['pp_tco'], false ) . '/>';
+    $html .= '<label for="pp_tco">¿Añadir enlace para tuitear también los comentarios?.</label><p><small>Si activas esta opción, se añadirá también un enlace para que tus lectores puedan tuitear también los comentarios que dejan entre sí. Además, si tienes instalado el plugin <a href="https://wordpress.org/plugins/twitter-comment-field/" target="_blank">Twitter Comment Field</a>, Vcgs Toolbox reconocerá el usuario de Twitter de quien comenta y lo mencionará en el tuit.</small></p>';
+    echo $html;
+}
+
+// ** Versión 1.8 Opción de Temas de Piopialo en Caja
+add_settings_field('pp_theme','Tema por defecto para el Piopialo en Caja', 'pp_theme_f','vcgs_toolbox', 'vcgstb_piopialo');
+function pp_theme_f() {
+	$options = get_option( 'vcgstb_options' );
+     
+    $html = '<select id="pp_theme" name="vcgstb_options[pp_theme]">';
+        $html .= '<option value="original">Original</option>';
+        $html .= '<option value="reducido"' . selected( $options['pp_theme'], 'reducido', false) . '>Reducido</option>';
+		$html .= '<option value="moderno"' . selected( $options['pp_theme'], 'moderno', false) . '>Moderno</option>';
+		$html .= '<option value="modernoGris"' . selected( $options['pp_theme'], 'modernoGris', false) . '>Moderno en Gris</option>';
+    $html .= '</select>';
+	$html .= '<label for="pp_theme">¿Qué tema quieres usar para mostrar los Piopialo en Caja?.</label><p><small>Escoge la apariencia de los piopialos en caja. El primero, original, es más visual, con el icono de twitter y el texto más grande. El segundo, reducido, ocupa menos espacio y no lleva tanta decoración. El tema Moderno ofrece una caja con un azul intenso y una transición sutil de fondo. Por último, el Moderno en Gris, ofrece lo mismo que el anterior pero una transición más espectacular de fondo gris a Azul. Esta opción por defecto se puede sobrescribir en cada instancia con los parámetros <code>theme="original"</code> para el tema original, <code>theme="reducido"</code> para el reducido, <code>theme="moderno"</code> para el Moderno y <code>theme="modernoGris"</code> para el Moderno en Gris.</small></p>';
+     
+    echo $html;
+}
+
+// Comenzamos con la sección de Settings para Midenlace Shortcode
+add_settings_section('vcgstb_midenlace', 'Relativo a Midenlace', 'plugin_midenlace_section_text', 'vcgs_toolbox');
+	function plugin_midenlace_section_text(){
+?>
+<p>Esta sección se refiere activar el Midenlalytics o, lo que es lo mismo, <b>un shortcode mara registrar clics a enlaces en google analytics</b>. Se usa colocando el shortcode <code>[midenlace categoria="categoria" etiqueta="etiqueta" accion="accion"]el código html del enlace[/midenlace]</code> para que el plugin registre los clics a ese enlace en Google Analytics como un evento. Puedes leer <a href="http://www.vcgs.net/blog/midenlalytics-mide-clics-enlaces-en-google-analytics" target="_blank">este post</a> para informarte mejor.</p>
+
+<?php
+	}
+
+add_settings_field('me_activate', 'Activar Midenlace', 'me_activate_f', 'vcgs_toolbox', 'vcgstb_midenlace');
+function me_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="me_activate" name="vcgstb_options[me_activate]" value="1"' . checked( 1, $options['me_activate'], false ) . '/>';
+    $html .= '<label for="me_activate">Activa esta casilla si quieres activar el Shortcode Midenlace.</label>';
+    echo $html;
+}
+// Comenzamos con la sección de Settings para la columna contadora de palabras
+add_settings_section('vcgstb_cpalabras', 'Relativo al contador de Palabras', 'plugin_cpalabras_section_text', 'vcgs_toolbox');
+	function plugin_cpalabras_section_text(){
+?>
+<p>Esta sección se refiere a si deseas activar la columna contadora de palabras en tu panel de adminsitración. Si lo activas, cuando vayas a Entradas, verás una columna que te dice cuántas palabras tiene cada post. Es ideal, por ejemplo, para comparar el número de comentarios con la longitud de los posts de un rápido vistazo. También te puede servir para ver la evolución que están teniendo tus posts.</p>
+
+<?php
+	}
+
+add_settings_field('copa_activate', 'Activar el Contador de Palabras', 'copa_activate_f', 'vcgs_toolbox', 'vcgstb_cpalabras');
+function copa_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="copa_activate" name="vcgstb_options[copa_activate]" value="1"' . checked( 1, $options['copa_activate'], false ) . '/>';
+    $html .= '<label for="copa_activate">Activa esta casilla si quieres que aparezca la columna contadora de palabras.</label>';
+    echo $html;
+}
+// Comenzamos con la sección de Settings para los comentarios sin responder
+add_settings_section('vcgstb_sinrespuesta', 'Relativo a la funcionalidad de Comentarios Sin Responder', 'plugin_sinrespuesta_section_text', 'vcgs_toolbox');
+	function plugin_sinrespuesta_section_text(){
+?>
+<p>Esta sección se refiere a si quieres activar la funcionalidad de <strong>comentarios pendientes de responder</strong>. Basado en el plugin original <a href="https://wordpress.org/plugins/comments-not-replied-to/" target="_blank">"Comments Not Replied To"</a> aunque con algunas mejoras, como que no muestre los pingbacks o que solo muestre los comentarios pendientes del último mes. <strong>Cuidado</strong>, no activar esta opción si tienes el plugin instalado y activado pues provocarás un conflicto.</p>
+<p>Una vez activado, verás un filtro en la página de comentarios que te mostrará los comentarios pendientes de responder que tienes. Para mí es realmente útil.</p>
+
+<?php
+	}
+
+add_settings_field('cope_activate', 'Activar la Funcionalidad de Comentarios Sin Respuesta', 'cope_activate_f', 'vcgs_toolbox', 'vcgstb_sinrespuesta');
+function cope_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="cope_activate" name="vcgstb_options[cope_activate]" value="1"' . checked( 1, $options['cope_activate'], false ) . '/>';
+    $html .= '<label for="cope_activate">Activa esta casilla si quieres poder filtrar los comentarios que no has respondido aún.</label>';
+    echo $html;
+}
+add_settings_field('cope_interval', 'Meses a evaluar comentarios sin respuesta', 'cope_interval_f', 'vcgs_toolbox', 'vcgstb_sinrespuesta');
+function cope_interval_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="text" id="cope_interval" name="vcgstb_options[cope_interval]" value="'.$options['cope_interval'].'"/> P. Ej. 3';
+    $html .= '<p><small>Esta es la antiguedad máxima de comentarios para evaluar si están pendientes. Si no respondes un comentario pero es más antiguo que este número de meses, entonces no aparecerá en la lista.</small></p>';
+    echo $html;
+}
+
+
+// Comenzamos con la sección de Settings para Añadir Featured Image
+add_settings_section('vcgstb_featimage', 'Relativo a la funcionalidad de Añadir la Imagen destacada en el Feed', 'plugin_featimage_section_text', 'vcgs_toolbox');
+	function plugin_featimage_section_text(){
+?>
+<p>Esta sección se refiere a si quieres activar la función por la cual <strong>vcgs-toolbox añadirá automáticamente la imagen destacada de tus posts a tu feed rss</strong>. Por defecto, la imagen destacada no está incluida en el cuerpo de un post cuando se consulta a través del feed, lo que puede provocar que tus posts no se vean muy bien cuando tus lectores usen Feedly o cualquier otro lector RSS. Activando esta opción te aseguras que la imagen destacada se insertará al principio de los posts y éstos se verán bien en las aplicaciones de los usuarios.</p>
+
+<?php
+	}
+
+add_settings_field('feati_activate', 'Añadir la Imagen destacada al principio del RSS', 'feati_activate_f', 'vcgs_toolbox', 'vcgstb_featimage');
+function feati_activate_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="checkbox" id="feati_activate" name="vcgstb_options[feati_activate]" value="1"' . checked( 1, $options['feati_activate'], false ) . '/>';
+    $html .= '<label for="feati_activate">Activa esta casilla si quieres que la imagen destacada de tus posts se añada al feed RSS.</label>';
+    echo $html;
+}
+function top_comment_authors($amount = 5, $dias=0) {
+global $wpdb;
+if ($dias > 0) { $datequery = ' AND comment_date BETWEEN CURDATE() - INTERVAL '.$dias.' DAY AND CURDATE() '; } else { $datequery = ''; }
+$results = $wpdb->get_results('
+    SELECT
+    COUNT(comment_author_email) AS comments_count, comment_author_email, comment_author, comment_author_url
+    FROM '.$wpdb->comments.'
+    WHERE comment_author_email != "" AND comment_author_email != "'.get_option( 'admin_email' ).'" AND comment_type = "" AND comment_approved = 1 '.$datequery.'
+    GROUP BY comment_author_email
+    ORDER BY comments_count DESC, comment_author ASC
+    LIMIT '.$amount
+);
+$output = "<ul>";
+foreach($results as $result) {
+    $output .= "<li><a href=\"".$result->comment_author_url."\" target=\"_blank\">".$result->comment_author." (".$result->comments_count." comentarios)</a></li>";
+}
+$output .= "</ul>";
+return $output;
+}
+if ( isset($_GET['tab']) && $_GET['tab'] == 'bhood') {
+add_settings_section('vcgstb_blogging', 'Blogging Hood - Descubre a tus comentaristas más activos', 'plugin_blogginhood_section_text', 'vcgs_toolbox');
+	function plugin_blogginhood_section_text(){
+		?>
+		<p>¿Sabes lo importantes que son los comentarios en tu blog? Seguro que si, que cada comentario te hará muchísima ilusión. <strong>Los comentaristas dan vida a un blog</strong>, son los lectores más valiosos que tienes. ¿Por qué no premiar a los más activos? Seguro que querrás agradecerles su fidelidad, ¿no?</p><p>Pues bien, lo primero que necesitas es conocer a los más activos de tu blog (por cantidad de comentarios). Aunque este sistema no es infalible, porque cuenta comentarios cuyo email coincida, te podrá ayudar a <strong>hacerte una idea de quienes son los comentaristas más activos de tu blog</strong>. Recuerda este post: <a href="http://www.vcgs.net/blog/como-ser-un-bloggin-hood/" target="_blank">Cómo ser un Blogging Hood</a>.</p>
+
+<div style="float: left; width: 30%;">
+<h3>Del Último mes</h3>
+<? echo top_comment_authors(20,30); ?>
+</div>
+<div style="float: left; width: 30%;">
+<h3>Últimos 3 meses</h3>
+<? echo top_comment_authors(20,180); ?>
+</div>
+<div style="float: left; width: 30%;">
+<h3>Desde siempre</h3>
+<? echo top_comment_authors(20,0); ?>
+</div>
+<div style="clear: both;"></div>
+<hr />
+<?php
+	}
+}
 
 function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('sc_activate',$input))
 	{
 		$input['sc_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('feati_activate',$input))
+	{
+		$input['feati_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('bs_activate',$input))
+	{
+		$input['bs_activate'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('me_activate',$input))
+	{
+		$input['me_activate'] = '0';
 	}
 	if (!is_array($input) || !array_key_exists('sc_single',$input))
 	{
@@ -179,6 +384,18 @@ function vcgstb_validate_options($input) {
 	{
 		$input['pp_linkedin'] = '0';
 	}
+	if (!is_array($input) || !array_key_exists('pp_powered',$input))
+	{
+		$input['pp_powered'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('pp_underlined',$input))
+	{
+		$input['pp_underlined'] = '0';
+	}
+	if (!is_array($input) || !array_key_exists('pp_ctt',$input))
+	{
+		$input['pp_ctt'] = '0';
+	}
 	if (!is_array($input) || !array_key_exists('fa_activate',$input))
 	{
 		$input['fa_activate'] = '0';
@@ -190,12 +407,42 @@ function vcgstb_validate_options($input) {
 	{
 		$input['pp_via'] = '';
 	}
+	if (!is_array($input) || !array_key_exists('pp_tco',$input))
+	{
+		$input['pp_tco'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('copa_activate',$input))
+	{
+		$input['copa_activate'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('cope_activate',$input))
+	{
+		$input['cope_activate'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('cope_interval',$input))
+	{
+		$input['cope_interval'] = '1';
+	}
+	if (!is_array($input) || !array_key_exists('pp_theme',$input))
+	{
+		$input['pp_theme'] = 'original';
+	}
 	return $input;
 }
 
 }
 
 $options = get_option('vcgstb_options');
+
+if ($options['copa_activate']=='1')
+{
+	include(dirname(__FILE__). '/columna-contapalabras.php');
+}
+
+if ($options['cope_activate']=='1')
+{
+	include(dirname(__FILE__). '/comentarios-pendientes.php');
+}
 
 if ($options['sc_activate']=='1')
 {
@@ -228,7 +475,7 @@ if ($options['fa_activate']==1)
 {
 function registra_fontawesome() {
 
-	wp_register_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', false, false, 'all' );
+	wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', false, false, 'all' );
 	wp_enqueue_style( 'fontawesome' );
 
 }
@@ -236,10 +483,36 @@ function registra_fontawesome() {
 add_action( 'wp_enqueue_scripts', 'registra_fontawesome' );
 }
 
+// Ahora toca hablar del Bootstrap
+if (is_page() && $options['bs_activate']==1)
+{
+	function registra_bootstrap() {
+		wp_register_style('bootstrap_css','//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css', false, false, 'all');
+		wp_register_script( 'bootstrap_js', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js', array( 'jquery' ), false, false );
+		wp_enqueue_style('bootstrap_css');
+		wp_enqueue_script('bootstrap_js');
+	}
+	add_action ('wp_enqueue_scripts','registra_bootstrap');
+}
 
 if ($options['pp_activate']==1)
 {
-	add_shortcode('piopialo', function ($atts, $content = null) {
+	function add_piopialob_styles() {
+		wp_register_style('piopialob_style', plugins_url('css/piopialob.css', __FILE__));
+		wp_enqueue_style('piopialob_style');
+	}
+	add_action( 'wp_enqueue_scripts', 'add_piopialob_styles' ); 
+	
+	function carga_piopialo() {
+		wp_register_script( 'piopialo', plugins_url( '/js/piopialo.js' , __FILE__ ), array( 'jquery' ), false, true );
+		wp_enqueue_script( 'piopialo' );
+	}
+	
+	// Hook into the 'wp_enqueue_scripts' action
+	add_action( 'wp_enqueue_scripts', 'carga_piopialo' );
+
+	
+	function MiPiopialo($atts, $content = null) {
 		
 	$options = get_option('vcgstb_options');
 	// Configuración por defecto - Edita estas variables si lo deseas
@@ -249,6 +522,10 @@ if ($options['pp_activate']==1)
 	$i_gplus = ($options['pp_gplus']=="1")?true:false; // Incluir por defecto el botón de Google Plus
 	$i_facebook = ($options['pp_facebook']=="1")?true:false; // Incluir por defecto el botón de Facebook
 	$i_linkedin = ($options['pp_linkedin']=="1")?true:false; // Incluir por defecto el botón de linkedin
+	$i_boxed = false;
+	$powered = ($options['pp_powered'] == "1")?false:true;
+	$underlined = ($options['pp_underlined'] == "1")?true:false;
+	$itheme = $options['pp_theme'];
 	// -------------------------------------
 	// Extraer y tratar los parámetros recibidos
 	extract(shortcode_atts(array(  
@@ -257,7 +534,9 @@ if ($options['pp_activate']==1)
 		 "via" => '',
 		 "vcgplus" => '',
 		 "vcfacebook" => '',
-		 "vclinkedin" => ''  
+		 "vclinkedin" => '',
+		 "vcboxed" => '',
+		 "theme" => ''  
     ), $atts));
 	if ($go != 1) $directoa = false;
 	if ($text != '') $llamada = $text;
@@ -265,44 +544,233 @@ if ($options['pp_activate']==1)
 	if($vcgplus!='') $i_gplus = true;
 	if($vcfacebook!='') $i_facebook = true;
 	if($vclinkedin!='') $i_linkedin = true;
+	if($vcboxed!='') $i_boxed = true;
+	if ($theme != '') $itheme = $theme;
 	
 	
 	if ($content != null) {
 		
+		// Necesitamos saber si esta llamada es para un feed y así cambiar la forma de publicar
+		$esfeed = is_feed();
+		
+		// Si es para un feed, los iconos no salen así que la llamada debe ser al menos algo.
+		if ( $llamada == '' && $esfeed ) { $llamada = ' piopialo '; }
+		
 		// Obtener un ID "Unico" para este piopis. Como no podemos controlarlo, al ser shortcode
 		//   lo que finalmente he decidido es usar el primer caracteres. Así, puedes piopiar lo que quieras
 		//   en un mismo post siempre que no coincida el primer caracter. mejoraré esta limitación ...
-		if ($directoa) $tagid = 'piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,1);
+		if ($directoa) $tagid = '#piopialo-'.substr(preg_replace('/[^A-Za-z0-9]/', '',strip_tags($content)),0,4);
 		
 		// Obtener la URL codificada
-		$miurl = urlencode(get_permalink($post->ID).'#'.$tagid);
+		$miurl = urlencode(get_permalink($post->ID).$tagid);
 		
-		// Codificar el texto . Nos dejamos 94 caracteres en esta versión
+		// Codificar el texto.
 		$texto = urlencode('"'.substr(strip_tags($content),0,116-strlen($ivia)).'" '.$ivia.' ');
 		
 		// Primero crear la etiqueta para enlazar directamente a este lugar
 		$ancla = $directoa ? '<a name="'.$tagid.'" id="'.$tagid.'"></a>':'';
-				
-		$enlace = '<a target="_blank" class="piopialo" href="http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
-		if ($i_gplus)
+		// Nuevo, si MideEnlace está activado, medimos el clic. Pero no si es feed, porque no tiene sentido... 
+		if ($options['me_activate'] == '1' && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piogplus" href="https://plus.google.com/share?url='.$miurl.'" title="En Google Plus"><i class="fa fa-google-plus-square"></i>&nbsp;</a>';
+			$onclick = ' onClick="javascript:rMidEnlace(\'piopialo\', \''.get_the_title().'\', \''.strip_tags($content).'\');" ';
+		} else {
+			$onclick = '';
+		}
+		$solotuit = 'http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl;
+		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" '.(($esfeed)?'href=':'data-piolink').'="'.$solotuit.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
+		
+		if ($i_gplus && !$esfeed)
+		{
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piogplus" data-piolink="https://plus.google.com/share?url='.$miurl.'" title="En Google Plus"><i class="fa fa-google-plus-square"></i>&nbsp;</a>';
 		}
 		
-		if ($i_facebook)
+		if ($i_facebook && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="pioface" href="http://www.facebook.com/sharer/sharer.php?u='.$miurl.'" title="En Facebook"><i class="fa fa-facebook-square">&nbsp;</i></a>';
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="pioface" data-piolink="http://www.facebook.com/sharer/sharer.php?u='.$miurl.'" title="En Facebook"><i class="fa fa-facebook-square">&nbsp;</i></a>';
 		}
 		
-		if ($i_linkedin)
+		if ($i_linkedin && !$esfeed)
 		{
-			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" href="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
+			$enlace .= '&nbsp;&nbsp;<a target="_blank" class="piolinked" data-piolink="http://www.linkedin.com/shareArticle?mini=true&url='.$miurl.'&title='.$texto.'" title="En Linkedin"><i class="fa fa-linkedin">&nbsp;</i></a>';
 		}
 		
-		return $ancla.'<span class="piopialo">'.$content.'</span>'.$enlace;
-		
+		if ($i_boxed && !$esfeed) {
+			if ($itheme == 'original' || $itheme == '') 
+			{
+				$iconurl = plugins_url( 'img/pio-icon.png' , __FILE__ );
+				$returnval = $ancla.'<div class="piopialob">
+									<div class="piopialob-icon">
+												<img src="'.$iconurl.'" width="60" />
+									</div>
+									<div class="piopialob-text">
+												<span class="piopialob-frase">'.strip_tags($content).'</span><span class="piopialob-link">'.$enlace.'</span>
+									</div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialob-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+				$returnval .= '</div>';
+			} elseif ($itheme == 'reducido') {
+				$returnval = $ancla.'<div class="piopialobred">
+									<div class="piopialobred-text">
+												<span class="piopialobred-frase">'.strip_tags($content).'</span><span class="piopialobred-link">'.$enlace.'</span>
+									</div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobred-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/" >Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+				$returnval .= '</div>';
+			} elseif ($itheme == 'moderno') {
+				$returnval = $ancla.'<div class="piopialobmod" data-piolink="'.$solotuit.'">
+									<div class="piopialobmod-text">
+												<span class="piopialobmod-frase">'.strip_tags($content).'</span><span class="piopialobmod-link">'.$enlace.'</span>
+									</div></div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobmod-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+	//			$returnval .= '</div>';
+			} elseif ($itheme == 'modernoGris') {
+				$returnval = $ancla.'<div class="piopialobmodgris hvr-bounce-to-bottom" data-piolink="'.$solotuit.'">
+									<div class="piopialobmodgris-text">
+												<span class="piopialobmodgris-frase">'.strip_tags($content).'</span><span class="piopialobmodgris-link">'.$enlace.'</span>
+									</div></div>';
+				if ($powered) {
+					$returnval .= '<div class="piopialobmodgris-powered">
+											<p><span class="powered-link" data-piolink="https://wordpress.org/plugins/vcgs-toolbox/">Powered by Vcgs-Toolbox</span></p>
+									</div>';
+				}
+	//			$returnval .= '</div>';
+			}
+		} else {
+			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
+			if($esfeed) {
+				$returnval .= $ancla.'<a class="piopialo"'.$subraya.' href="'.$solotuit.'">'.$content.'</a>'.$enlace;
+			} else {
+				$returnval .= $ancla.'<span class="piopialo"'.$subraya.' data-piolink="'.$solotuit.'">'.$content.'</span>'.$enlace;
+			}
+		}
+		return $returnval;	
 	}
 	
-});
+}
+add_shortcode('piopialo', 'MiPiopialo');
+
+// Registramos el botón del editor
+add_action( 'init', 'vcgs_buttons' );
+function vcgs_buttons() {
+    add_filter( "mce_external_plugins", "wptuts_add_buttons" );
+    add_filter( 'mce_buttons', 'wptuts_register_buttons' );
+}
+function wptuts_add_buttons( $plugin_array ) {
+    $plugin_array['vcgs'] = plugins_url( '/js/pio-editor.js' , __FILE__ );
+    return $plugin_array;
+}
+function wptuts_register_buttons( $buttons ) {
+    array_push( $buttons, 'piopialo' );
+	array_push($buttons,'piopialob'); 
+    return $buttons;
+}
+//Fin de registrar Botón
+
+// Compatibilidad con ClickToTweet
+if ( ! class_exists( 'tm_clicktotweet' ) && $options["pp_ctt"] == 1 ) {
+		add_filter('the_content', 'CTTreplace_tags',1);
+		function CTTreplace_tags($content) {
+					$content = preg_replace_callback("/\[tweet \"(.*?)\"]/i", 'CTTweet', $content);
+					return $content;
+		}
+		
+		function CTTweet($matches) {
+			$text = $matches[1];
+			return '[piopialo vcboxed="1"]'.$text.'[/piopialo]';
+		}
+}
+
+if($options['pp_tco']=="1")
+{
+add_filter( 'comment_text', 'modificar_comentario');
+function modificar_comentario( $text ){
+	
+	$options = get_option('vcgstb_options');
+	$ivia = $options['pp_via']; // Texto de firma / mención del Tuit
+	
+	// Obtener el Usuario de Twitter del que comenta
+	if( $commenttwitter = get_comment_meta( get_comment_ID(), 'twitter', true ) ) {
+		$tuitear=urlencode('Me ha gustado el comentario de @'.esc_attr($commenttwitter).' en este post '.$ivia);
+	}
+	else { 
+		$tuitear=urlencode('Me ha gustado este comentario en un post '.$ivia);
+	}
+	
+	// Obtener la URL directa del comentario
+	$url = urlencode(get_comment_link(get_comment_ID()));
+	if (is_admin() || is_feed()) {
+		$enlace = '<p><a class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
+	} else {
+		$enlace = '<p><span class="piopialo-comment" data-piolink="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></span></p>';
+	}
+	
+	return $text.$enlace;
+}
+}
+
+}
+
+
+// Ahora comenzamos con el tema de midenlace
+if ($options["me_activate"]=='1')
+{
+	// Register Script
+
+	function carga_midenlace() {
+		wp_register_script( 'midenlace', plugins_url( '/js/midenlace.js' , __FILE__ ), array( 'jquery' ), false, true );
+		wp_enqueue_script( 'midenlace' );
+	}
+	
+	// Hook into the 'wp_enqueue_scripts' action
+	add_action( 'wp_enqueue_scripts', 'carga_midenlace' );
+	
+	function MiMidenlace($atts, $content = null) {
+		// Configuración por defecto - Edita estas variables si lo deseas
+		$i_categoria = 'Midenlace';
+		$i_accion = 'Clic en Enlace';
+		$i_etiqueta = 'EtiquetaEvento';
+		// -------------------------------------
+		// Extraer y tratar los parámetros recibidos
+		extract(shortcode_atts(array(  
+			"categoria" => '',
+			 "accion" => '',
+			 "etiqueta" => ''
+		), $atts));
+		if ($categoria != '') $i_categoria = $categoria;
+		if ($accion != '') $i_accion = $accion;
+		if ($etiqueta != '') $i_etiqueta = $etiqueta;	
+		
+		if ($content != null) {	
+			$evento = '<a onClick="javascript:rMidEnlace(\''.$i_categoria.'\', \''.$i_accion.'\', \''.$i_etiqueta.'\');"  ';
+			$devolver = str_replace('<a ', $evento,$content);
+			return $devolver;
+		}
+}
+add_shortcode('midenlace', 'MiMidenlace');	
+}
+
+// Esto es para el featured image
+
+if ($options['feati_activate']=='1') {
+	function vc_add_featured_image_to_feed($content) {
+		global $post;
+		if ( has_post_thumbnail( $post->ID ) ){
+			$content = '' . get_the_post_thumbnail( $post->ID, 'large' ) . '' . $content;
+		}
+		return $content;
+	}
+
+	add_filter('the_excerpt_rss', 'vc_add_featured_image_to_feed', 1000, 1);
+	add_filter('the_content_feed', 'vc_add_featured_image_to_feed', 1000, 1);
 }
