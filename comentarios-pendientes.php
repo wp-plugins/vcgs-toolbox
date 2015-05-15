@@ -348,6 +348,9 @@ class Comments_Not_Replied_To {
 	 */
 
 	public function return_missing_list(array $pieces, WP_Comment_Query $query) {
+		if (! is_admin())
+		{ return $pieces; }
+		// Esta función sólo se puede ejecutar si es admin
 		$current_screen = get_current_screen();
 		// bail on anything not admin
 		if ( is_admin() && ('edit-comments' == $current_screen->base) && (isset($_GET['missing_reply'])))
