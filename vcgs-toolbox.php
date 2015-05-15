@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: Toolbox with some awesome tools, shortcodes and configs from Victor Campuzano. Go to Settings->VCGS Toolbox for config options and  more. Please, goto to <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> for contact and more info.
- * Version: 1.9.1
+ * Version: 1.9.2
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -275,6 +275,13 @@ function cope_activate_f() {
     $html .= '<label for="cope_activate">Activa esta casilla si quieres poder filtrar los comentarios que no has respondido aún.</label>';
     echo $html;
 }
+add_settings_field('cope_interval', 'Meses a evaluar comentarios sin respuesta', 'cope_interval_f', 'vcgs_toolbox', 'vcgstb_sinrespuesta');
+function cope_interval_f() {
+	$options = get_option( 'vcgstb_options' );
+    $html = '<input type="text" id="cope_interval" name="vcgstb_options[cope_interval]" value="'.$options['cope_interval'].'"/> P. Ej. 3';
+    $html .= '<p><small>Esta es la antiguedad máxima de comentarios para evaluar si están pendientes. Si no respondes un comentario pero es más antiguo que este número de meses, entonces no aparecerá en la lista.</small></p>';
+    echo $html;
+}
 
 
 // Comenzamos con la sección de Settings para Añadir Featured Image
@@ -411,6 +418,10 @@ function vcgstb_validate_options($input) {
 	if (!is_array($input) || !array_key_exists('cope_activate',$input))
 	{
 		$input['cope_activate'] = '';
+	}
+	if (!is_array($input) || !array_key_exists('cope_interval',$input))
+	{
+		$input['cope_interval'] = '1';
 	}
 	if (!is_array($input) || !array_key_exists('pp_theme',$input))
 	{
@@ -567,7 +578,7 @@ if ($options['pp_activate']==1)
 			$onclick = '';
 		}
 		$solotuit = 'http://www.twitter.com/intent/tweet/?text='.$texto.'&url='.$miurl;
-		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" data-piolink="'.$solotuit.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
+		$enlace = '<a'.$onclick.' rel="nofollow" target="_blank" class="piopialo" '.(($esfeed)?'href=':'data-piolink').'="'.$solotuit.'"  title="Piopialo Ahora"> - '.$llamada.' <i class="fa fa-twitter"></i></a>';
 		
 		if ($i_gplus && !$esfeed)
 		{
@@ -637,7 +648,11 @@ if ($options['pp_activate']==1)
 			}
 		} else {
 			$subraya = ($underlined)?' style="text-decoration: underline;" ':'';
-			$returnval .= $ancla.'<span class="piopialo"'.$subraya.' data-piolink="'.$solotuit.'">'.$content.'</span>'.$enlace;
+			if($esfeed) {
+				$returnval .= $ancla.'<a class="piopialo"'.$subraya.' href="'.$solotuit.'">'.$content.'</a>'.$enlace;
+			} else {
+				$returnval .= $ancla.'<span class="piopialo"'.$subraya.' data-piolink="'.$solotuit.'">'.$content.'</span>'.$enlace;
+			}
 		}
 		return $returnval;	
 	}
@@ -694,8 +709,11 @@ function modificar_comentario( $text ){
 	
 	// Obtener la URL directa del comentario
 	$url = urlencode(get_comment_link(get_comment_ID()));
-	
-	$enlace = '<p><span class="piopialo-comment" data-piolink="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></span></p>';
+	if (is_admin() || is_feed()) {
+		$enlace = '<p><a class="piopialo-comment" href="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></a></p>';
+	} else {
+		$enlace = '<p><span class="piopialo-comment" data-piolink="http://www.twitter.com/intent/tweet/?text='.$tuitear.'&url='.$url.'"  title="Piopia este comentario"> - Tuitea este comentario <i class="fa fa-twitter"></i></span></p>';
+	}
 	
 	return $text.$enlace;
 }

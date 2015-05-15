@@ -71,11 +71,12 @@ class Comments_Not_Replied_To {
 		add_action( 'comment_post', array( $this, 'remove_missing_meta' ) );
 
 		// return just the missing replies in the comment table
-		add_action( 'pre_get_comments', array( $this, 'return_missing_list' ) );
+		//add_action( 'pre_get_comments', array( $this, 'return_missing_list' ) );
+		add_filter('comments_clauses', array($this, 'return_missing_list') , 10, 2);
 
 		// Add the 'Missing Reply' custom column
 		add_filter( 'manage_edit-comments_columns', array( $this, 'missing_reply_column' ) );
-		add_filter( 'manage_comments_custom_column', array( $this, 'missing_reply_display' ), 10, 2	);
+		add_filter( 'manage_comments_custom_column', array( $this, 'missing_reply_display' ), 10, 2);
 
 		// add 'Missing Reply' link in status row
 		add_filter( 'comment_status_links', array( $this, 'missing_reply_status_link' ) );
@@ -346,34 +347,18 @@ class Comments_Not_Replied_To {
 	 * @since	1.0
 	 */
 
-	public function return_missing_list( $comments = array() ) {
-
-		// bail on anything not admin
-		if ( ! is_admin() )
-			return;
-
-		// only run this on the comments table
+	public function return_missing_list(array $pieces, WP_Comment_Query $query) {
 		$current_screen = get_current_screen();
-
-		if( 'edit-comments' !== $current_screen->base )
-			return;
-
-		// check for query param
-		if ( ! isset( $_GET['missing_reply'] ) )
-			return;
-
-		// now run action to show missing
-		$comments->query_vars['meta_key']	= '_cnrt_missing';
-		$comments->query_vars['meta_value'] = '1';
-		$comments->query_vars['date_query'] = array(
-					'after' => '1 month ago'
-				);
-
-		// Because at this point, the meta query has already been parsed,
-		// we need to re-parse it to incorporate our changes
-		$comments->meta_query->parse_query_vars( $comments->query_vars );
-
-	} // end missing_reply_list
+		// bail on anything not admin
+		if ( is_admin() && ('edit-comments' == $current_screen->base) && (isset($_GET['missing_reply'])))
+		{
+			global $wpdb;
+			$options = get_option('vcgstb_options');
+			$pieces['join'] = " INNER JOIN wp_commentmeta ON ( wp_comments.comment_ID = wp_commentmeta.comment_id )";
+			$pieces['where'] = "(comment_approved = '1') AND (comment_date >= DATE_SUB(NOW(), INTERVAL ".$options['cope_interval']." MONTH)) AND (wp_commentmeta.meta_key = '_cnrt_missing') AND comment_type != 'pingback' AND comment_type != 'trackback'";
+		}
+	return $pieces;
+	}
 
 	/**
 	 * Add the meta tag to comments for query logic later
@@ -447,14 +432,14 @@ class Comments_Not_Replied_To {
 	 */
 
 	public function get_missing_count( $post_id = 0 ) {
-
+		$options = get_option('vcgstb_options');
 		$args = array(
 			'post_id'    => $post_id,
 			'meta_key'   => '_cnrt_missing',
 			'meta_value' => '1',
 			'type' => 'comment',
 			'date_query' => array(
-					'after' => '1 month ago',
+					'after' => $options['cope_interval'].' months ago',
 						),
 			);
 
@@ -494,7 +479,6 @@ class Comments_Not_Replied_To {
 			</style>';
 
 	} // end admin_css
-
 } // end class
 
 /**

@@ -1,10 +1,10 @@
 === Vcgs Toolbox ===
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
-Requires at least: 3.6
-Tested up to: 4.1.1
+Requires at least: 3.9
+Tested up to: 4.2.2
 License: GPL2
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,10 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.2 =
+* Fixed problem with Comments Not Replied to after updating to WP 4.2
+* Compatible with Wordpress 4.2
+* Piopialo and comments links now work on admin and RSS.
 = 1.9 =
 * Minor bug fixes
 * Added 2 new Piopialo's Themes (Cool!)
