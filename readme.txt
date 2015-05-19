@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.9
 Tested up to: 4.2.2
 License: GPL2
-Stable tag: 1.9.3
+Stable tag: 1.9.4
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,12 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.4 =
+* A partir de ahora todo estará en español.
+* Añadida una nueva página de configuración mucho más amigable.
+* Corregidos algunos (muy poquitos) errores.
+* Actualizado Font Awesome a la versión 4.3.0
+* Actualizado Bootstrap a la versión 3.3.4.
 = 1.9.3 =
 * Fixed Internal Server Error with new Not Replied To function
 = 1.9.2 =
