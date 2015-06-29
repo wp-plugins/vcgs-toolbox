@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: La Caja de Herramientas de Víctor Campuzano. Un plugin construido por una comunidad con herramientas y funciones que te ayudarán a hacer más satisfactoria tu experiencia como Blogger. Por favor, visita <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> para más información o contactar conmigo.
- * Version: 1.9.4
+ * Version: 1.9.5
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -312,6 +312,21 @@ function modificar_comentario( $text ){
 	
 	return $text.$enlace;
 }
+}
+
+// Selector de texto
+if ( $options['pp_selector']=='1' && !is_admin()) {
+	function selector_js() {
+		$options = get_option('vcgstb_options');
+    echo '<script type="text/javascript">
+		var activate_selector = true;
+		var pioselector_via = \''.$options['pp_via'].'\';
+		var pioselector_llamada = \''.$options['pp_llamada'].'\';
+		
+	</script>';
+	}
+	// Add hook for front-end <head></head>
+	add_action('wp_head', 'selector_js');
 }
 
 }

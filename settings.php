@@ -139,6 +139,11 @@
 							'std'=> array('original'), 
 							'desc' => 'Escoge la apariencia de los piopialos en caja. El primero, original, es más visual, con el icono de twitter y el texto más grande. El segundo, reducido, ocupa menos espacio y no lleva tanta decoración. El tema Moderno ofrece una caja con un azul intenso y una transición sutil de fondo. Por último, el Moderno en Gris, ofrece lo mismo que el anterior pero una transición más espectacular de fondo gris a Azul. Esta opción por defecto se puede sobrescribir en cada instancia con los parámetros <code>theme="original"</code> para el tema original, <code>theme="reducido"</code> para el reducido, <code>theme="moderno"</code> para el Moderno y <code>theme="modernoGris"</code> para el Moderno en Gris.'
 		));
+		
+		//CONVERTIR TAMBIÉN FRASES DE CLICK TO TWEET
+	  $options_panel->addCheckbox('pp_selector',array('name'=> 'Piopiar texto seleccionado', 
+      'std' => false, 
+	  'desc' => '<p>Si activas esta casilla, se ofrecerá a tus lectores la posibilidad de tuitear el texto que seleccionen de tu post.</p>'));
 	  
   $options_panel->CloseTab();
   

@@ -1,8 +1,1 @@
-// JavaScript Document
-function oWDL (objeto) {
-	window.open(objeto.attr('data-piolink'));
-}
-jQuery('[data-piolink]').click(function(event) {    
-  oWDL(jQuery(this));
-  event.preventDefault();
-});
+function oWDL(a){window.open(a.attr("data-piolink"))}function getSelectionText(){var a="";return window.getSelection?a=window.getSelection().toString():document.selection&&"Control"!=document.selection.type&&(a=document.selection.createRange().text),a}function creaPioton(a,b){var c=a.pageX+"px",d=a.pageY+"px",e=document.createElement("div");e.id="pioton",e.style.position="absolute",e.style.left=c,e.style.top=d,e.innerHTML=TuitLink(b),document.body.appendChild(e)}function TuitLink(a){return dispo=140-pioselector_via.length-26,a.length>dispo&&(a=a.substring(0,dispo-4)+"..."),a='"'+a+'" '+pioselector_via+" "+window.location.href,link='<a href="http://www.twitter.com/intent/tweet/?text='+encodeURIComponent(a)+'" target="_blank"><i class="fa fa-twitter"></i> '+pioselector_llamada+"</a>"}jQuery("[data-piolink]").click(function(a){oWDL(jQuery(this)),a.preventDefault()}),jQuery(document).ready(function(){activate_selector&&(jQuery("article").mouseup(function(a){texto=getSelectionText(),""!=texto&&creaPioton(a,texto)}),jQuery("article").mousedown(function(){window.getSelection?window.getSelection().empty?window.getSelection().empty():window.getSelection().removeAllRanges&&window.getSelection().removeAllRanges():document.selection&&document.selection.empty(),pioboton=document.getElementById("pioton"),pioboton&&pioboton.remove()}))});
