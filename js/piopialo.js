@@ -56,8 +56,6 @@ function creaPioton(e,texto)
 
 function TuitLink(texto) {
 	// vamos a contar los caracteres que nos quedan para la frase
-	if (typeof pioselector_via === 'undefined') var pioselector_via = '';
-	if (typeof pioselector_llamada === 'undefined') var pioselector_llamada = 'tuitealo';
 	dispo = 140 - pioselector_via.length - 26;
 	if (texto.length > dispo) 
 	{
