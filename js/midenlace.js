@@ -1,0 +1,1 @@
+function rMidEnlace(a,b,c){"undefined"!==typeof ga&&ga("send","event",a,b,c,1,{nonInteraction:1}),"undefined"!==typeof _gaq&&_gaq.push(["_trackEvent",a,b,c,1,!0])}
