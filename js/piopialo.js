@@ -1,1 +1,69 @@
-function oWDL(a){window.open(a.attr("data-piolink"))}function getSelectionText(){var a="";return window.getSelection?a=window.getSelection().toString():document.selection&&"Control"!=document.selection.type&&(a=document.selection.createRange().text),a}function creaPioton(a,b){var c=a.pageX+"px",d=a.pageY+"px",e=document.createElement("div");e.id="pioton",e.style.position="absolute",e.style.left=c,e.style.top=d,e.innerHTML=TuitLink(b),document.body.appendChild(e)}function TuitLink(a){return dispo=140-pioselector_via.length-26,a.length>dispo&&(a=a.substring(0,dispo-4)+"..."),a='"'+a+'" '+pioselector_via+" "+window.location.href,link='<a href="http://www.twitter.com/intent/tweet/?text='+encodeURIComponent(a)+'" target="_blank"><i class="fa fa-twitter"></i> '+pioselector_llamada+"</a>"}jQuery("[data-piolink]").click(function(a){oWDL(jQuery(this)),a.preventDefault()}),jQuery(document).ready(function(){activate_selector&&(jQuery("article").mouseup(function(a){texto=getSelectionText(),""!=texto&&creaPioton(a,texto)}),jQuery("article").mousedown(function(){window.getSelection?window.getSelection().empty?window.getSelection().empty():window.getSelection().removeAllRanges&&window.getSelection().removeAllRanges():document.selection&&document.selection.empty(),pioboton=document.getElementById("pioton"),pioboton&&pioboton.remove()}))});
+// JavaScript Document
+function oWDL (objeto) {
+	window.open(objeto.attr('data-piolink'));
+}
+jQuery('[data-piolink]').click(function(event) {    
+  oWDL(jQuery(this));
+  event.preventDefault();
+});
+
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
+jQuery(document).ready(function(e) {
+    if ( ! (typeof activate_selector === 'undefined')) {
+		 jQuery('article').mouseup(function (e){
+			 texto = getSelectionText();
+			 if (texto!= '')
+       		{
+				 creaPioton(e,texto);
+			}
+   		});
+		jQuery('article').mousedown(function (e) {
+				if (window.getSelection) {
+				  if (window.getSelection().empty) {  // Chrome
+					window.getSelection().empty();
+				  } else if (window.getSelection().removeAllRanges) {  // Firefox
+					window.getSelection().removeAllRanges();
+				  }
+				} else if (document.selection) {  // IE?
+				  document.selection.empty();
+				}
+				pioboton = document.getElementById('pioton');
+				if (pioboton) pioboton.remove();
+		});
+	}
+});
+
+function creaPioton(e,texto)
+{
+		var x = e.pageX + 'px';
+        var y = e.pageY + 'px';
+        var div = document.createElement('div');
+		div.id = 'pioton';
+		div.style.position = 'absolute';
+		div.style.left = x;
+		div.style.top = y;
+        div.innerHTML = TuitLink(texto);
+        document.body.appendChild(div);
+}
+
+function TuitLink(texto) {
+	// vamos a contar los caracteres que nos quedan para la frase
+	if (typeof pioselector_via === 'undefined') var pioselector_via = '';
+	if (typeof pioselector_llamada === 'undefined') var pioselector_llamada = 'tuitealo';
+	dispo = 140 - pioselector_via.length - 26;
+	if (texto.length > dispo) 
+	{
+		texto = texto.substring(0,dispo-4) + '...';
+	} 
+	texto = '"' + texto + '" ' + pioselector_via + ' ' + window.location.href;
+	link = '<a href="http://www.twitter.com/intent/tweet/?text=' + encodeURIComponent(texto) + '" target="_blank"><i class="fa fa-twitter"></i> ' + pioselector_llamada + '</a>';
+	return link;
+}
