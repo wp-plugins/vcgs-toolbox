@@ -25,7 +25,7 @@ jQuery(document).ready(function(e) {
 					 creaPioton(e,texto);
 				}
 			});
-			jQuery(document).mousedown(function (e) {
+			jQuery('[id*="post-"]').mousedown(function (e) {
 					if (window.getSelection) {
 					  if (window.getSelection().empty) {  // Chrome
 						window.getSelection().empty();
