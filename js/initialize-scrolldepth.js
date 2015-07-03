@@ -1,1 +1,4 @@
-jQuery(document).ready(function(a){a.scrollDepth()});
+// JavaScript Document
+jQuery(document).ready(function($) {
+    $.scrollDepth();
+});

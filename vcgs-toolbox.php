@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: La Caja de Herramientas de Víctor Campuzano. Un plugin construido por una comunidad con herramientas y funciones que te ayudarán a hacer más satisfactoria tu experiencia como Blogger. Por favor, visita <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> para más información o contactar conmigo.
- * Version: 1.9.6.1
+ * Version: 1.9.6.2
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -93,13 +93,13 @@ if (is_page() && $options['bs_activate']==1)
 if ($options['pp_activate']==1)
 {
 	function add_piopialob_styles() {
-		wp_register_style('piopialob_style', plugins_url('css/piopialob.css', __FILE__));
+		wp_register_style('piopialob_style', plugins_url('css/piopialob.css', __FILE__),false,'1.9.6.2');
 		wp_enqueue_style('piopialob_style');
 	}
 	add_action( 'wp_enqueue_scripts', 'add_piopialob_styles' ); 
 	
 	function carga_piopialo() {
-		wp_register_script( 'piopialo', plugins_url( '/js/piopialo.js' , __FILE__ ), array( 'jquery' ), false, true );
+		wp_register_script( 'piopialo', plugins_url( '/js/piopialo.js' , __FILE__ ), array( 'jquery' ), '1.9.6.2', true );
 		wp_enqueue_script( 'piopialo' );
 	}
 	

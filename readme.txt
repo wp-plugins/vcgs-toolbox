@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.9
 Tested up to: 4.2.2
 License: GPL2
-Stable tag: 1.9.6.1
+Stable tag: 1.9.6.2
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -38,6 +38,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.6.2 =
+* Se mejora la compatibilidad de la función de selección de texto para tuitear gracias a José Salgado.
 = 1.9.6.1 =
 * Soluciono otro pequeño problema. Creo que ya está todo bien.
 = 1.9.6 =

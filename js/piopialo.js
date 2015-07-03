@@ -18,26 +18,26 @@ function getSelectionText() {
 }
 jQuery(document).ready(function(e) {
     if ( ! (typeof activate_selector === 'undefined')) {
-		 jQuery('article').mouseup(function (e){
-			 texto = getSelectionText();
-			 if (texto!= '')
-       		{
-				 creaPioton(e,texto);
-			}
-   		});
-		jQuery('article').mousedown(function (e) {
-				if (window.getSelection) {
-				  if (window.getSelection().empty) {  // Chrome
-					window.getSelection().empty();
-				  } else if (window.getSelection().removeAllRanges) {  // Firefox
-					window.getSelection().removeAllRanges();
-				  }
-				} else if (document.selection) {  // IE?
-				  document.selection.empty();
+			 jQuery('[id*="post-"').mouseup(function (e){
+				 texto = getSelectionText();
+				 if (texto!= '')
+				{
+					 creaPioton(e,texto);
 				}
-				pioboton = document.getElementById('pioton');
-				if (pioboton) pioboton.remove();
-		});
+			});
+			jQuery(document).mousedown(function (e) {
+					if (window.getSelection) {
+					  if (window.getSelection().empty) {  // Chrome
+						window.getSelection().empty();
+					  } else if (window.getSelection().removeAllRanges) {  // Firefox
+						window.getSelection().removeAllRanges();
+					  }
+					} else if (document.selection) {  // IE?
+					  document.selection.empty();
+					}
+					pioboton = document.getElementById('pioton');
+					if (pioboton) pioboton.remove();
+			});
 	}
 });
 

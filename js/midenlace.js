@@ -1,1 +1,10 @@
-function rMidEnlace(a,b,c){"undefined"!==typeof ga&&ga("send","event",a,b,c,1,{nonInteraction:1}),"undefined"!==typeof _gaq&&_gaq.push(["_trackEvent",a,b,c,1,!0])}
+// JavaScript Document
+
+function rMidEnlace(categoria, accion, etiqueta) {
+	if (typeof(ga) !== "undefined") {
+		ga('send', 'event', categoria, accion, etiqueta, 1, {'nonInteraction': 1});
+	}
+    if (typeof(_gaq) !== "undefined") {
+		_gaq.push(['_trackEvent', categoria, accion, etiqueta, 1, true]);
+	}
+}
