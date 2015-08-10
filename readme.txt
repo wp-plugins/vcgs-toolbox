@@ -2,9 +2,9 @@
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.9
-Tested up to: 4.2.2
+Tested up to: 4.2.4
 License: GPL2
-Stable tag: 1.9.6.3
+Stable tag: 1.9.6.4
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -13,7 +13,8 @@ Very simple plugin that includes some awesome options, features, shortcodes and 
 
 At the moment, this plugin includes:
 <ul>
-<li><strong>New!</strong> Now you can add a "Tweet This" link to all of your comments.</li>
+<li><strong>New!</strong> Send Events to Google Analytics every time a new comment is posted.</li>
+<li>You can add a "Tweet This" link to all of your comments.</li>
 <li>Add Featured Image to RSS.</li>
 <li>Know Who are your best commentators in the settings pages.</li>
 <li><a href="http://www.vcgs.net/blog/scrollytics-registrando-el-scroll-en-google-analytics/" target="_blank">*Scrollytics:*</a> add a javascript code based on "Scroll Depth" to track what percentage scroll every user does on every post or page.</li>
@@ -38,6 +39,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.6.4 =
+* Nuevo! Ahora puedes registrar en Google Analytics cada vez que un usuario hace un nuevo comentario. Mirar en la pestaña comentarios de la configuración del plugin.
 = 1.9.6.3 =
 * Para hacer que desaparezca el botón solo tienes que pinchar al lado.
 = 1.9.6.2 =

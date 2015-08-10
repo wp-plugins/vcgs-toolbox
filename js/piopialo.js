@@ -65,3 +65,32 @@ function TuitLink(texto) {
 	link = '<a href="http://www.twitter.com/intent/tweet/?text=' + encodeURIComponent(texto) + '" target="_blank"><i class="fa fa-twitter"></i> ' + pioselector_llamada + '</a>';
 	return link;
 }
+
+if ( 'true' == get_url_parameter( 'analycome' ) ) {
+	if (typeof(ga) !== "undefined") {
+		ga('send', 'event', 'User Interact', 'Comment sent', get_url_comment_id(), 1, {'nonInteraction': 1});
+	}
+    if (typeof(_gaq) !== "undefined") {
+		_gaq.push(['_trackEvent', 'User Interact', 'Comment sent', get_url_comment_id(), 1, true]);
+	}
+}
+
+function get_url_comment_id()
+{
+	var url = window.location + " ";
+	var posicion = url.indexOf('#comment');
+	var commentid = url.substring(posicion,url.length);
+	return commentid;
+}
+
+function get_url_parameter( param_name ) {
+	var page_url = window.location.search.substring(1);
+	var url_variables = page_url.split('&');
+	for ( var i = 0; i < url_variables.length; i++ ) {
+			var curr_param_name = url_variables[i].split( '=' );
+		if ( curr_param_name[0] == param_name ) {
+			return curr_param_name[1];
+		}
+	}
+}
+

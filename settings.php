@@ -199,6 +199,11 @@
 							'std'=> array('3'), 
 							'desc' => 'Esta es la antiguedad máxima de comentarios para evaluar si están pendientes. Si no respondes un comentario pero es más antiguo que este número de meses, entonces no aparecerá en la lista..'
 		));
+		
+		// REGISTRAR CADA COMENTARIO NUEVO EN ANALYTICS
+		$options_panel->addCheckbox('analycome',array('name'=> 'Registrar comentarios en Analytics', 
+      'std' => false, 
+	  'desc' => 'Si quieres que se registre un Evento en Google Analytics cada vez que se produzca un nuevo comentario, de modo que puedas analizar el rendimiento de tus visitas y canales en términos de comentarios, entonces activa esta opción.'));
   
   $options_panel->CloseTab();
   

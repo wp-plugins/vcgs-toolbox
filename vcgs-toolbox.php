@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: La Caja de Herramientas de Víctor Campuzano. Un plugin construido por una comunidad con herramientas y funciones que te ayudarán a hacer más satisfactoria tu experiencia como Blogger. Por favor, visita <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> para más información o contactar conmigo.
- * Version: 1.9.6.3
+ * Version: 1.9.6.4
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -383,4 +383,21 @@ if ($options['feati_activate']=='1') {
 
 	add_filter('the_excerpt_rss', 'vc_add_featured_image_to_feed', 1000, 1);
 	add_filter('the_content_feed', 'vc_add_featured_image_to_feed', 1000, 1);
+}
+
+if ($options['analycome'] == '1') {
+	add_filter('comment_post_redirect', 'redirect_after_comment');
+	function redirect_after_comment($location)
+	{
+		global $wpdb;
+		$newurl = $location;
+		$newurl = substr( $location, 0, strpos( $location, '#comment' ) );
+		$commentlink = substr($location, strpos($location,'#comment'),strlen($location)-1);
+		$delimeter = false === strpos( $location, '?' ) ? '?' : '&';
+		$params = 'analycome=true';
+
+		$newurl .= $delimeter . $params;
+		$newurl .= $commentlink;
+		return $newurl;
+	}
 }
