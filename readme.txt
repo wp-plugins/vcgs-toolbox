@@ -2,9 +2,9 @@
 Contributors: vcgs
 Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.9
-Tested up to: 4.2.4
+Tested up to: 4.3
 License: GPL2
-Stable tag: 1.9.6.4
+Stable tag: 1.9.7
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -39,6 +39,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.7 =
+* Ahora es compatible con Wordpress 4.3 "Billie"
 = 1.9.6.4 =
 * Nuevo! Ahora puedes registrar en Google Analytics cada vez que un usuario hace un nuevo comentario. Mirar en la pestaña comentarios de la configuración del plugin.
 = 1.9.6.3 =
