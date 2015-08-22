@@ -18,7 +18,7 @@ function getSelectionText() {
 }
 jQuery(document).ready(function(e) {
     if ( ! (typeof activate_selector === 'undefined')) {
-			 jQuery('[id*="post-"').mouseup(function (e){
+			 jQuery('[id*="post-"]').mouseup(function (e){
 				 texto = getSelectionText();
 				 if (texto!= '')
 				{
