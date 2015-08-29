@@ -4,7 +4,7 @@ Tags: tools,twitter,tweet this,analytics,icons
 Requires at least: 3.9
 Tested up to: 4.3
 License: GPL2
-Stable tag: 1.9.7.1
+Stable tag: 1.9.8
 
 Very simple plugin that includes some awesome options, features, shortcodes and scripts for improve your blogging experience.
 
@@ -39,6 +39,8 @@ At the moment, this plugin includes:
 4. Example of boxed piopialo
 
 == Changelog ==
+= 1.9.8 =
+* Ahora, si quieres, puedes colocar la caja de comentarios al principio del formulario. Tus lectores empezarán a comentar directamente, dejando la introducción de sus datos para el final.
 = 1.9.7.1 =
 * Corrige un error reportado por Beatriz Peña García (@beitapg)
 = 1.9.7 =

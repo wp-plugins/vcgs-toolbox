@@ -3,7 +3,7 @@
  * Plugin Name: Vcgs Toolbox
  * Plugin URI: http://www.vcgs.net/blog
  * Description: La Caja de Herramientas de Víctor Campuzano. Un plugin construido por una comunidad con herramientas y funciones que te ayudarán a hacer más satisfactoria tu experiencia como Blogger. Por favor, visita <a href="http://www.vcgs.net/blog" target="_blank">vcgs.net/blog</a> para más información o contactar conmigo.
- * Version: 1.9.7.1
+ * Version: 1.9.8
  * Author: Víctor Campuzano (vcgs)
  * Author URI: http://www.vcgs.net/blog/
  * Config: Algo mas
@@ -400,4 +400,26 @@ if ($options['analycome'] == '1') {
 		$newurl .= $commentlink;
 		return $newurl;
 	}
+}
+if($options['textareafirst'] == '1') {
+	// We use just one function for both jobs.
+	add_filter( 'comment_form_defaults', 'vcgstb_move_textarea' );
+	add_action( 'comment_form_top', 'vcgstb_move_textarea' );
+	
+	function vcgstb_move_textarea( $input = array () )
+	{
+		static $textarea = '';
+
+		if ( 'comment_form_defaults' === current_filter() )
+		{
+			// Copy the field to our internal variable …
+			$textarea = $input['comment_field'];
+			// … and remove it from the defaults array.
+			$input['comment_field'] = '';
+			return $input;
+		}
+
+		print apply_filters( 'comment_form_field_comment', $textarea );
+	}
+	
 }

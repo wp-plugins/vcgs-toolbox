@@ -204,6 +204,10 @@
 		$options_panel->addCheckbox('analycome',array('name'=> 'Registrar comentarios en Analytics', 
       'std' => false, 
 	  'desc' => 'Si quieres que se registre un Evento en Google Analytics cada vez que se produzca un nuevo comentario, de modo que puedas analizar el rendimiento de tus visitas y canales en términos de comentarios, entonces activa esta opción.'));
+	  // COLOCAR LA CAJA DE COMENTARIOS AL PRINCIPIO DEL FORMULARIO
+		$options_panel->addCheckbox('textareafirst',array('name'=> 'Empezar por el comentario', 
+      'std' => false, 
+	  'desc' => 'Si activas esta función, intentaremos mover la caja de comentarios al principio del formulario. Esto puede ser positivo y aumentar el número de comentarios. Función experimental.'));
   
   $options_panel->CloseTab();
   
